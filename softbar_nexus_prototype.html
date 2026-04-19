@@ -1,0 +1,644 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans, system-ui, sans-serif); }
+
+  .app-shell {
+    display: flex;
+    height: 580px;
+    background: #f4f4f2;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  /* === SOFTBAR === */
+  .softbar {
+    width: 56px;
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    gap: 4px;
+    flex-shrink: 0;
+    z-index: 100;
+    position: relative;
+  }
+
+  .softbar-logo {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .softbar-logo svg { width: 28px; height: 28px; }
+
+  .softbar-divider {
+    width: 32px;
+    height: 0.5px;
+    background: rgba(255,255,255,0.15);
+    margin: 6px 0;
+  }
+
+  .softbar-item {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .softbar-item:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.85); }
+  .softbar-item.active { background: rgba(99,102,241,0.35); color: #fff; }
+  .softbar-item.disabled { color: rgba(255,255,255,0.22); cursor: pointer; }
+  .softbar-item.disabled:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+
+  .softbar-item svg { width: 20px; height: 20px; }
+
+  /* Tooltip */
+  .sb-tooltip {
+    position: absolute;
+    left: 52px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap;
+    padding: 6px 10px;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 9999;
+    border: 0.5px solid rgba(255,255,255,0.12);
+  }
+
+  .sb-tooltip::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-right-color: #1a1a2e;
+  }
+
+  .softbar-item:hover .sb-tooltip { opacity: 1; }
+
+  .sb-tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.07);
+    margin-bottom: 2px;
+  }
+
+  .sb-tag-new { background: rgba(99,102,241,0.3); color: #a5b4fc; }
+  .sb-tag-disabled { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.25); }
+
+  .softbar-bottom { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+  /* === MAIN CONTENT (1Doc mockup) === */
+  .main-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top-bar {
+    background: #fff;
+    border-bottom: 0.5px solid #e5e5e5;
+    padding: 0 16px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .top-bar-left { display: flex; align-items: center; gap: 16px; }
+  .top-bar-brand { font-size: 16px; font-weight: 600; color: #2563eb; letter-spacing: -0.5px; }
+  .top-nav { display: flex; gap: 12px; }
+  .top-nav span { font-size: 12px; color: #555; cursor: pointer; padding: 4px 8px; border-radius: 5px; }
+  .top-nav span:hover { background: #f0f0f0; }
+
+  .top-bar-right { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #fff; }
+
+  .content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: #f4f4f2;
+  }
+
+  .welcome-title { font-size: 20px; font-weight: 600; color: #111; margin-bottom: 4px; }
+  .welcome-sub { font-size: 12px; color: #888; margin-bottom: 16px; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .stat-card { background: #fff; border-radius: 8px; padding: 12px; border: 0.5px solid #e5e5e5; }
+  .stat-label { font-size: 11px; color: #888; margin-bottom: 6px; }
+  .stat-number { font-size: 26px; font-weight: 600; color: #2563eb; display: flex; align-items: center; gap: 6px; }
+  .stat-icon { width: 28px; height: 28px; border-radius: 50%; background: #2563eb; display: flex; align-items: center; justify-content: center; }
+  .stat-icon svg { width: 14px; height: 14px; color: #fff; }
+
+  .cards-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .list-card { background: #fff; border-radius: 8px; border: 0.5px solid #e5e5e5; overflow: hidden; }
+  .list-card-header { font-size: 12px; font-weight: 600; color: #333; padding: 10px 12px 6px; border-bottom: 0.5px solid #f0f0f0; }
+  .list-item { padding: 7px 12px; border-bottom: 0.5px solid #f5f5f5; }
+  .list-item:last-child { border-bottom: none; }
+  .list-item-title { font-size: 11px; font-weight: 500; color: #222; }
+  .list-item-sub { font-size: 10px; color: #aaa; }
+
+  /* === MODAL === */
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,15,30,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 420px;
+    max-width: 90%;
+    padding: 28px;
+    transform: scale(0.96);
+    transition: transform 0.2s;
+    position: relative;
+  }
+
+  .modal-overlay.open .modal { transform: scale(1); }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: #555;
+  }
+
+  .modal-close:hover { background: #e0e0e0; }
+
+  .modal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f0f4ff;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .modal-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 6px; line-height: 1.3; }
+  .modal-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+
+  .modal-features { list-style: none; margin-bottom: 20px; display: flex; flex-direction: column; gap: 7px; }
+  .modal-features li { font-size: 12px; color: #444; display: flex; align-items: flex-start; gap: 8px; }
+  .modal-features li::before { content: ''; display: block; width: 6px; height: 6px; border-radius: 50%; background: #2563eb; margin-top: 5px; flex-shrink: 0; }
+
+  .modal-integrate { font-size: 11px; color: #888; margin-bottom: 12px; }
+  .modal-integrate strong { color: #555; }
+
+  .modal-actions { display: flex; gap: 10px; }
+
+  .btn-primary {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    flex: 1;
+  }
+  .btn-primary:hover { background: #1d4ed8; }
+
+  .btn-secondary {
+    background: transparent;
+    color: #555;
+    border: 0.5px solid #ccc;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { background: #f5f5f5; }
+
+  .product-preview {
+    background: #f8faff;
+    border-radius: 10px;
+    border: 0.5px solid #e0e8ff;
+    padding: 14px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .preview-chip {
+    background: #fff;
+    border: 0.5px solid #e0e8ff;
+    border-radius: 6px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #444;
+  }
+
+  .preview-chip svg { width: 14px; height: 14px; color: #2563eb; }
+</style>
+
+<div class="app-shell">
+
+  <!-- SOFTBAR -->
+  <div class="softbar">
+    <div class="softbar-logo">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="28" height="28" rx="7" fill="#6366f1"/>
+        <path d="M7 10h14M7 14h10M7 18h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="softbar-divider"></div>
+
+    <!-- Procuradorias - DISABLED -->
+    <div class="softbar-item disabled" onclick="openModal('procuradorias')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4"/>
+      </svg>
+      <div class="sb-tooltip">
+        <div class="sb-tag sb-tag-disabled">Não contratado</div>
+        Procuradorias
+      </div>
+    </div>
+
+    <!-- Obras - DISABLED -->
+    <div class="softbar-item disabled" onclick="openModal('obras')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="M2 20h20M4 20V10l8-6 8 6v10M9 20v-5h6v5M12 4v3"/>
+        <circle cx="12" cy="9" r="1.5" fill="currentColor"/>
+      </svg>
+      <div class="sb-tooltip">
+        <div class="sb-tag sb-tag-disabled">Não contratado</div>
+        Obras públicas
+      </div>
+    </div>
+
+    <!-- Licenciamento - DISABLED -->
+    <div class="softbar-item disabled" onclick="openModal('licenciamento')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+      <div class="sb-tooltip">
+        <div class="sb-tag sb-tag-disabled">Não contratado</div>
+        Licenciamento ambiental
+      </div>
+    </div>
+
+    <!-- Gestão de Projetos - DISABLED -->
+    <div class="softbar-item disabled" onclick="openModal('gestao')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+      </svg>
+      <div class="sb-tooltip">
+        <div class="sb-tag sb-tag-disabled">Não contratado</div>
+        Gestão de projetos
+      </div>
+    </div>
+
+    <!-- 1Doc - ACTIVE (current product) -->
+    <div class="softbar-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+      <div class="sb-tooltip">
+        <div class="sb-tag sb-tag-new">Ativo</div>
+        Processos digitais
+      </div>
+    </div>
+
+    <div class="softbar-divider"></div>
+
+    <!-- MAP - soon -->
+    <div class="softbar-item disabled" onclick="openModal('map')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+        <line x1="9" y1="3" x2="9" y2="18"/>
+        <line x1="15" y1="6" x2="15" y2="21"/>
+      </svg>
+      <div class="sb-tooltip">
+        <div class="sb-tag sb-tag-disabled">Em breve</div>
+        Map
+      </div>
+    </div>
+
+    <!-- Analytics - soon -->
+    <div class="softbar-item disabled" onclick="openModal('analytics')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+        <line x1="18" y1="20" x2="18" y2="10"/>
+        <line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+      <div class="sb-tooltip">
+        <div class="sb-tag sb-tag-disabled">Em breve</div>
+        Analytics
+      </div>
+    </div>
+
+    <div class="softbar-bottom">
+      <div class="softbar-divider"></div>
+      <div class="softbar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        <div class="sb-tooltip">Meu perfil</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT: 1DOC -->
+  <div class="main-content">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <span class="top-bar-brand">1Doc</span>
+        <nav class="top-nav">
+          <span>Início</span>
+          <span>Inbox ▾</span>
+          <span>Novo ▾</span>
+          <span>Listar ▾</span>
+          <span>Fila de Assinaturas</span>
+        </nav>
+      </div>
+      <div class="top-bar-right">
+        <span style="font-size:11px;color:#888;">SCMDC-AOC-DAOC</span>
+        <div class="avatar">CL</div>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <div class="welcome-title">Bem-vindo de volta, Prefeito</div>
+      <div class="welcome-sub">Aqui está uma visão geral de suas tarefas e seus indicadores gerais.</div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Não lidos</div>
+          <div class="stat-number">
+            <div class="stat-icon"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8"><path d="M2 4l6 5 6-5M2 4h12v8H2z"/></svg></div>
+            44
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Assinaturas solicitadas</div>
+          <div class="stat-number">
+            <div class="stat-icon"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8"><path d="M3 12l3-3 3 3 5-5M3 8l2 2"/></svg></div>
+            24
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Fila de assinaturas</div>
+          <div class="stat-number">
+            <div class="stat-icon"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="3" width="12" height="10" rx="1"/><line x1="5" y1="7" x2="11" y2="7"/><line x1="5" y1="10" x2="9" y2="10"/></svg></div>
+            12
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Prazos a vencer</div>
+          <div class="stat-number" style="color:#e24b4a;">
+            <div class="stat-icon" style="background:#e24b4a;"><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="3" width="12" height="11" rx="1"/><line x1="5" y1="1" x2="5" y2="5"/><line x1="11" y1="1" x2="11" y2="5"/><line x1="2" y1="7" x2="14" y2="7"/></svg></div>
+            40
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-row">
+        <div class="list-card">
+          <div class="list-card-header">Documentos não lidos</div>
+          <div class="list-item">
+            <div class="list-item-title">Memorando 114/2025</div>
+            <div class="list-item-sub">Novo contrato - Governo · 23 ago 2025</div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-title">Memorando 018/2025</div>
+            <div class="list-item-sub">Atualizações setoriais · 11 ago 2025</div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-title">Memorando 035/2025</div>
+            <div class="list-item-sub">Mudanças · 07 ago 2025</div>
+          </div>
+        </div>
+        <div class="list-card">
+          <div class="list-card-header">Prazos a vencer</div>
+          <div class="list-item">
+            <div class="list-item-title">Memorando 21/2025</div>
+            <div class="list-item-sub">Vencimento: 25/08/2025 · Todos</div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-title">Memorando 044/2025</div>
+            <div class="list-item-sub">Vencimento: 26/08/2025 · Somente eu</div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-title">Memorando 576/2025</div>
+            <div class="list-item-sub">Vencimento: 26/08/2025 · SADM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL OVERLAY -->
+  <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal" id="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const products = {
+  procuradorias: {
+    name: 'Procuradorias',
+    badge: 'Gestão Jurídica',
+    title: 'Mais controle jurídico. Menos retrabalho.',
+    desc: 'Centralize pareceres, acompanhe prazos e padronize fluxos jurídicos em um ambiente totalmente digital e auditável.',
+    features: [
+      'Gestão de processos administrativos e judiciais',
+      'Controle de prazos e manifestações',
+      'Fluxos padronizados e rastreáveis',
+      'Relatórios gerenciais para tomada de decisão'
+    ],
+    chips: [
+      { icon: '⚖️', label: 'Dívida ativa' },
+      { icon: '👤', label: 'Devedor' },
+      { icon: '📅', label: 'Histórico' },
+      { icon: '🔒', label: 'Impedimentos' },
+      { icon: '📋', label: 'Execução fiscal' }
+    ]
+  },
+  obras: {
+    name: 'Obras',
+    badge: 'Infraestrutura',
+    title: 'Gestão inteligente de obras públicas.',
+    desc: 'Acompanhe contratos, medições, cronogramas e execução física financeira em uma única plataforma integrada.',
+    features: [
+      'Gestão de contratos e aditivos',
+      'Medição e acompanhamento de execução',
+      'Painéis de desempenho em tempo real',
+      'Integração com financeiro e planejamento'
+    ],
+    chips: [
+      { icon: '📄', label: 'Contratos' },
+      { icon: '📐', label: 'Medições' },
+      { icon: '📊', label: 'Indicadores' },
+      { icon: '📅', label: 'Cronogramas' }
+    ]
+  },
+  licenciamento: {
+    name: 'Licenciamento Ambiental',
+    badge: 'Meio Ambiente',
+    title: 'Licenciamento ambiental digital e rastreável.',
+    desc: 'Gerencie processos de licenciamento ambiental com fluxos padronizados, prazos controlados e transparência total.',
+    features: [
+      'Gestão de licenças e renovações',
+      'Controle de condicionantes ambientais',
+      'Notificações automáticas de prazos',
+      'Histórico completo de processos'
+    ],
+    chips: [
+      { icon: '🌿', label: 'Licenças' },
+      { icon: '📋', label: 'Condicionantes' },
+      { icon: '🔔', label: 'Alertas' }
+    ]
+  },
+  gestao: {
+    name: 'Gestão de Projetos',
+    badge: 'Planejamento',
+    title: 'Projetos públicos sob controle total.',
+    desc: 'Planeje, monitore e entregue projetos governamentais com visibilidade completa de prazos, recursos e resultados.',
+    features: [
+      'Portfólio e gestão de projetos',
+      'Cronogramas e marcos de entrega',
+      'Alocação de recursos e equipes',
+      'Dashboards e relatórios executivos'
+    ],
+    chips: [
+      { icon: '🗂️', label: 'Portfólio' },
+      { icon: '⏱️', label: 'Cronograma' },
+      { icon: '👥', label: 'Equipes' }
+    ]
+  },
+  map: {
+    name: 'Map',
+    badge: 'Em breve',
+    title: 'Visualização geoespacial de dados públicos.',
+    desc: 'Integre dados de todos os sistemas Softplan em mapas interativos para tomada de decisão baseada em localização.',
+    features: [
+      'Mapa interativo de serviços e obras',
+      'Camadas de dados integrados',
+      'Alertas georreferenciados',
+      'Exportação e relatórios geoespaciais'
+    ],
+    chips: [
+      { icon: '🗺️', label: 'Mapa' },
+      { icon: '📍', label: 'Localização' },
+      { icon: '📊', label: 'Dados' }
+    ]
+  },
+  analytics: {
+    name: 'Analytics',
+    badge: 'Em breve',
+    title: 'Inteligência de dados para a gestão pública.',
+    desc: 'Consolide indicadores de todos os produtos Softplan em painéis executivos para decisões mais rápidas e embasadas.',
+    features: [
+      'Painéis unificados cross-produto',
+      'KPIs personalizáveis por secretaria',
+      'Análise preditiva e alertas',
+      'Integração com BI e ferramentas externas'
+    ],
+    chips: [
+      { icon: '📈', label: 'Dashboards' },
+      { icon: '🔢', label: 'KPIs' },
+      { icon: '🔗', label: 'Integração' }
+    ]
+  }
+};
+
+function openModal(productKey) {
+  const p = products[productKey];
+  if (!p) return;
+
+  const chipsHtml = p.chips.map(c =>
+    `<div class="preview-chip"><span>${c.icon}</span>${c.label}</div>`
+  ).join('');
+
+  const featuresHtml = p.features.map(f => `<li>${f}</li>`).join('');
+
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-badge">${p.badge}</div>
+    <div class="modal-title">${p.title}</div>
+    <div class="modal-desc">${p.desc}</div>
+    <div class="product-preview">${chipsHtml}</div>
+    <ul class="modal-features">${featuresHtml}</ul>
+    <div class="modal-integrate">Use juntamente com: <strong>Processos Digitais · 1Doc</strong></div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="closeModal()">Solicitar avaliação ↗</button>
+      <button class="btn-secondary" onclick="closeModal()">Fechar</button>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+</script>
