@@ -4,6 +4,7 @@ import Header from "./Header";
 import Subheader from "./Subheader";
 import CentralDeAcoes from "./CentralDeAcoes";
 import ObrasGov from "./ObrasGov";
+import NexusHome from "./NexusHome";
 
 // ============================================================
 // DEMO: Simulação da Softbar no contexto Nexus
@@ -27,6 +28,7 @@ export default function App() {
         activeProductId={activeProduct}
         clientProducts={MOCK_CONTRACTED}
         onProductChange={setActiveProduct}
+        onLogoClick={() => setActiveProduct("nexus-home")}
       />
 
       {/* Conteúdo principal — muda conforme produto ativo */}
@@ -38,6 +40,10 @@ export default function App() {
         height: "100vh",
         overflow: "hidden",
       }}>
+        {activeProduct === "nexus-home" && (
+          <NexusHome />
+        )}
+
         {activeProduct === "processos-digitais" && (
           <>
             <Header />

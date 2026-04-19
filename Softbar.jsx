@@ -4,7 +4,7 @@ import { PRODUCTS } from "./softbar.config.jsx";
 import "./Softbar.css";
 import logoSoftplan from "./logo softplan.svg";
 
-export default function Softbar({ activeProductId = "processos-digitais", clientProducts = [], onProductChange }) {
+export default function Softbar({ activeProductId = "processos-digitais", clientProducts = [], onProductChange, onLogoClick }) {
   const [hoveredId, setHoveredId] = useState(null);
   const [modalProduct, setModalProduct] = useState(null);
 
@@ -23,7 +23,7 @@ export default function Softbar({ activeProductId = "processos-digitais", client
     <>
       <nav className="softbar" aria-label="Navegação de produtos Softplan">
         {/* Logo */}
-        <div className="softbar__logo">
+        <div className="softbar__logo" onClick={onLogoClick} title="Nexus — Visão geral">
           <img src={logoSoftplan} alt="Softplan" style={{ width: 28, height: 28 }} />
         </div>
 

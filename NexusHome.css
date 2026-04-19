@@ -1,0 +1,470 @@
+/* ============================================================
+   NEXUS HOME — Dashboard consolidado do ecossistema Softplan
+   ============================================================ */
+
+.nexus-home {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  background: #0f0f1a;
+  color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff1a transparent;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+
+.nexus-home__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 28px 32px 0;
+}
+
+.nexus-home__greeting {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.nexus-home__subtitle {
+  font-size: 13px;
+  color: #ffffff55;
+  margin: 0;
+}
+
+.nexus-home__period-btns {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.nexus-home__period-btn {
+  background: transparent;
+  border: 1px solid #ffffff1a;
+  border-radius: 20px;
+  color: #ffffff55;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.nexus-home__period-btn:hover {
+  border-color: #6366f1;
+  color: #a5b4fc;
+}
+
+.nexus-home__period-btn--active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #fff;
+}
+
+/* ── Body ───────────────────────────────────────────────── */
+
+.nexus-home__body {
+  padding: 20px 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Big Numbers ────────────────────────────────────────── */
+
+.nexus-home__bignumbers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.nh-bignum {
+  background: #1a1a2e;
+  border: 1px solid #ffffff0f;
+  border-radius: 10px;
+  padding: 18px 22px;
+}
+
+.nh-bignum__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff55;
+  margin-bottom: 10px;
+}
+
+.nh-bignum__value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.nh-bignum__value--highlight {
+  color: #fbbf24;
+}
+
+.nh-bignum__delta {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nh-bignum__delta--positive { color: #34d399; }
+.nh-bignum__delta--negative { color: #f87171; }
+
+/* ── Card base ──────────────────────────────────────────── */
+
+.nh-card {
+  background: #1a1a2e;
+  border: 1px solid #ffffff0f;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.nh-card__title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff55;
+  padding: 14px 20px 10px;
+  border-bottom: 1px solid #ffffff08;
+}
+
+/* ── Main grid ──────────────────────────────────────────── */
+
+.nexus-home__main-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.nexus-home__side {
+  display: flex;
+  flex-direction: column;
+}
+
+.nexus-home__side .nh-card {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ── Products ───────────────────────────────────────────── */
+
+.nh-products-body {
+  padding: 12px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nh-product-group__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #ffffff28;
+  padding: 8px 4px 6px;
+}
+
+.nh-product-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #12122a;
+  border: 1px solid #ffffff0d;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.nh-product-card:hover {
+  background: #16163a;
+  border-color: #ffffff1a;
+}
+
+.nh-product-card:last-child { margin-bottom: 0; }
+
+.nh-product-card--muted { opacity: 0.45; cursor: default; }
+.nh-product-card--muted:hover { background: #12122a; border-color: #ffffff0d; }
+
+.nh-product-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+}
+
+.nh-product-info { flex: 1; min-width: 0; }
+
+.nh-product-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.nh-product-desc {
+  font-size: 11px;
+  color: #ffffff55;
+}
+
+.nh-product-kpi {
+  font-size: 12px;
+  color: #ffffff66;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+/* ── Status badges ──────────────────────────────────────── */
+
+.nh-status {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.nh-status--ativo     { background: #6366f133; color: #a5b4fc; }
+.nh-status--atencao   { background: #f59e0b26; color: #fbbf24; }
+.nh-status--setup     { background: #ffffff0d; color: #ffffff55; }
+.nh-status--soon      { background: #ffffff08; color: #ffffff33; }
+.nh-status--disabled  { background: transparent; color: #ffffff22; border: 1px solid #ffffff0f; }
+
+/* ── Feed ───────────────────────────────────────────────── */
+
+.nh-feed-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 20px;
+  border-bottom: 1px solid #ffffff06;
+}
+
+.nh-feed-item:last-child { border-bottom: none; }
+
+.nh-feed-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.nh-feed-content { flex: 1; min-width: 0; }
+
+.nh-feed-text {
+  font-size: 12px;
+  color: #ffffffcc;
+  line-height: 1.45;
+  margin-bottom: 5px;
+}
+
+.nh-feed-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nh-feed-product {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.nh-feed-time {
+  font-size: 11px;
+  color: #ffffff33;
+}
+
+/* ── Alerts ─────────────────────────────────────────────── */
+
+.nh-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 16px 11px 14px;
+  border-bottom: 1px solid #ffffff06;
+  border-left: 3px solid transparent;
+  transition: background 0.12s;
+}
+
+.nh-alert:last-child { border-bottom: none; }
+.nh-alert:hover { background: #ffffff04; }
+
+.nh-alert-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.nh-alert-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffffcc;
+  margin-bottom: 2px;
+}
+
+.nh-alert-sub {
+  font-size: 11px;
+  color: #ffffff44;
+}
+
+.nh-alert--error   { border-left-color: #ef4444; }
+.nh-alert--warning { border-left-color: #f59e0b; }
+.nh-alert--info    { border-left-color: #6366f1; }
+.nh-alert--success { border-left-color: #10b981; }
+
+.nh-alert-more {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 11px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6366f1;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-top: 1px solid #ffffff08;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+
+.nh-alert-more:hover { background: #6366f10d; }
+
+/* ── Bottom grid ────────────────────────────────────────── */
+
+.nexus-home__bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+/* ── Efficiency bars ────────────────────────────────────── */
+
+.nh-eff-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+}
+
+.nh-eff-name {
+  font-size: 12px;
+  color: #ffffffaa;
+  width: 76px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nh-eff-bar-bg {
+  flex: 1;
+  height: 5px;
+  background: #ffffff0d;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.nh-eff-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.nh-eff-pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff55;
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Sparkline ──────────────────────────────────────────── */
+
+.nh-sparkline-wrap {
+  padding: 4px 20px 16px;
+}
+
+.nh-sparkline {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 80px;
+}
+
+.nh-spark-bar {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  background: #6366f1;
+  opacity: 0.5;
+  transition: opacity 0.12s;
+  min-height: 2px;
+}
+
+.nh-spark-bar:hover { opacity: 1; }
+
+/* ── Coverage ───────────────────────────────────────────── */
+
+.nh-coverage-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #ffffff06;
+}
+
+.nh-coverage-row:last-child { border-bottom: none; }
+
+.nh-coverage-name {
+  flex: 1;
+  font-size: 12px;
+  color: #ffffffaa;
+}
+
+.nh-coverage-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.nh-coverage-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.nh-coverage-dot--filled  { background: #6366f1; }
+.nh-coverage-dot--empty   { background: #ffffff0f; }
+
+.nh-coverage-fraction {
+  font-size: 12px;
+  color: #ffffff44;
+  min-width: 28px;
+  text-align: right;
+}
