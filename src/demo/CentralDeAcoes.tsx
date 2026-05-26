@@ -1,18 +1,48 @@
+import FAIcon from "../softbar/FAIcon";
 import "./CentralDeAcoes.css";
 
-const COUNTERS = [
+interface Counter {
+  id: string;
+  title: string;
+  counter: number;
+  iconClass: string;
+  iconColor: string;
+}
+
+interface ListItem {
+  title: string;
+  desc: string;
+  date: string;
+}
+
+interface ListColumn {
+  id: string;
+  subtitle: string;
+  footerLabel: string;
+  footerIcon: string;
+  items: ListItem[];
+}
+
+interface Circular {
+  title: string;
+  subtitle: string;
+  desc: string;
+  date: string;
+}
+
+const COUNTERS: Counter[] = [
   { id: "nao-lidos", title: "Não lidos", counter: 44, iconClass: "fa-solid fa-eye-slash", iconColor: "blue" },
   { id: "assinaturas-solicitadas", title: "Assinaturas solicitadas", counter: 24, iconClass: "fa-solid fa-file-signature", iconColor: "green" },
   { id: "fila-assinaturas", title: "Fila de assinaturas", counter: 12, iconClass: "fa-solid fa-file-lines", iconColor: "orange" },
   { id: "prazos", title: "Prazos a vencer", counter: 40, iconClass: "fa-solid fa-calendar", iconColor: "red" },
 ];
 
-const LISTS = [
+const LISTS: ListColumn[] = [
   {
     id: "nao-lidos", subtitle: "Documentos não lidos", footerLabel: "Inbox", footerIcon: "fa-regular fa-inbox",
     items: [
       { title: "Memorando 114/2025", desc: "Novo contrato - Governo", date: "23 de agosto de 2025" },
-      { title: "Memorando 114/2025", desc: "Novo contrato - Governo", date: "23 de agosto de 2025" },
+      { title: "Memorando 114/2025 (2)", desc: "Novo contrato - Governo", date: "23 de agosto de 2025" },
       { title: "Memorando 018/2025", desc: "Atualizações setoriais", date: "11 de agosto de 2025" },
       { title: "Memorando 035/2025", desc: "Mudanças", date: "07 de agosto de 2025" },
       { title: "Memorando 092/2025", desc: "Novo regulamento interno", date: "05 de agosto de 2025" },
@@ -62,7 +92,7 @@ const LISTS = [
   },
 ];
 
-const CIRCULARES = [
+const CIRCULARES: Circular[] = [
   { title: "Circular 009/2025", subtitle: "teste", desc: "testetete _ Samuel Desenvolvedor III", date: "15 de agosto de 2025" },
   { title: "Circular 008/2025", subtitle: "Teste C", desc: "Teste circular _ Dev. Teste Dev ... ... ...", date: "14 de agosto de 2025" },
   { title: "Circular 012/2023", subtitle: "Verificação de Numeração", desc: "Verificação de Numeração _ Moacir Silva de Matos Junior Admin", date: "14 de julho de 2023" },
@@ -75,7 +105,6 @@ const CIRCULARES = [
 export default function CentralDeAcoes() {
   return (
     <div className="cda">
-      {/* ── Welcome + KPIs ─────────────────────────────── */}
       <div className="cda__welcome">
         <div className="cda__welcome-text">
           <h1>Bem-vindo de volta, Prefeito</h1>
@@ -109,32 +138,29 @@ export default function CentralDeAcoes() {
         </div>
       </div>
 
-      {/* ── Grid 5 colunas: 2 rows, Comunicados span 2 ── */}
       <div className="cda__grid">
-        {/* Row 1: Counter Cards (col 1-4) */}
         {COUNTERS.map((c) => (
           <div key={c.id} className="cda__counter-card">
             <span className="cda__counter-title">
-              {c.title} <i className="fa-regular fa-circle-info" style={{ fontSize: 11, color: "#bbb" }} />
+              {c.title} <FAIcon icon="fa-regular fa-circle-info" style={{ fontSize: 11, color: "#bbb" }} />
             </span>
             <div className="cda__counter-body">
               <div className={`cda__counter-icon cda__counter-icon--${c.iconColor}`}>
-                <i className={c.iconClass} />
+                <FAIcon icon={c.iconClass} />
               </div>
               <span className="cda__counter-number">{c.counter}</span>
             </div>
           </div>
         ))}
 
-        {/* Comunicados: spans row 1 + row 2 (col 5) */}
         <div className="cda__comunicados">
           <div className="cda__comunicados-header">
             Comunicados
-            <i className="fa-regular fa-circle-info" style={{ fontSize: 12, color: "#bbb" }} />
+            <FAIcon icon="fa-regular fa-circle-info" style={{ fontSize: 12, color: "#bbb" }} />
           </div>
           <div className="cda__comunicados-items">
-            {CIRCULARES.map((c, i) => (
-              <div key={i} className="cda__circular">
+            {CIRCULARES.map((c) => (
+              <div key={c.title} className="cda__circular">
                 <div className="cda__circular-title">{c.title}</div>
                 {c.subtitle && <div className="cda__circular-subtitle">{c.subtitle}</div>}
                 {c.desc && <div className="cda__circular-text">{c.desc}</div>}
@@ -144,16 +170,15 @@ export default function CentralDeAcoes() {
           </div>
         </div>
 
-        {/* Row 2: Lists (col 1-4) */}
         {LISTS.map((col) => (
           <div key={col.id} className="cda__col">
             <div className="cda__col-subtitle">
               {col.subtitle}{" "}
-              <i className="fa-regular fa-circle-info" style={{ fontSize: 11, color: "#bbb" }} />
+              <FAIcon icon="fa-regular fa-circle-info" style={{ fontSize: 11, color: "#bbb" }} />
             </div>
             <div className="cda__col-items">
-              {col.items.map((item, i) => (
-                <div key={i} className="cda__item">
+              {col.items.map((item) => (
+                <div key={item.title} className="cda__item">
                   <div className="cda__item-title">{item.title}</div>
                   <div className="cda__item-desc">{item.desc}</div>
                   <div className="cda__item-date">{item.date}</div>
@@ -162,7 +187,7 @@ export default function CentralDeAcoes() {
             </div>
             <div className="cda__col-footer">
               <button className="cda__col-link">
-                <i className={col.footerIcon} />
+                <FAIcon icon={col.footerIcon} />
                 {col.footerLabel} <span style={{ fontSize: 14 }}>»</span>
               </button>
             </div>

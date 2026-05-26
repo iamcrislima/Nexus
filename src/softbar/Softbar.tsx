@@ -1,41 +1,61 @@
 import { useState } from "react";
 import SoftbarModal from "./SoftbarModal";
-import { PRODUCTS } from "./softbar.config.jsx";
+import FAIcon from "./FAIcon";
+import { PRODUCTS } from "./softbar.config";
+import type { ModalProduct } from "./types";
 import "./Softbar.css";
 import logoSoftplan from "./logo softplan.svg";
 
-export default function Softbar({ activeProductId = "processos-digitais", clientProducts = [], onProductChange, onLogoClick }) {
-  const [hoveredId, setHoveredId] = useState(null);
-  const [modalProduct, setModalProduct] = useState(null);
+interface SoftbarProps {
+  activeProductId?: string;
+  clientProducts?: string[];
+  notifications?: Record<string, number>;
+  onProductChange?: (id: string) => void;
+  onLogoClick?: () => void;
+}
 
-  const handleItemClick = (product) => {
+const SOON_TOOLS: ModalProduct[] = [
+  { id: "map", label: "Map", description: "Visualização geoespacial", soon: true, Icon: IconMap },
+  { id: "analytics", label: "Analytics", description: "Inteligência de dados", soon: true, Icon: IconAnalytics },
+  { id: "mensageria", label: "Mensageria", description: "Automação de mensagens", soon: true, Icon: IconMensageria },
+];
+
+export default function Softbar({
+  activeProductId = "processos-digitais",
+  clientProducts = [],
+  notifications = {},
+  onProductChange,
+  onLogoClick,
+}: SoftbarProps) {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [modalProduct, setModalProduct] = useState<ModalProduct | null>(null);
+
+  const handleItemClick = (product: { id: string; url?: string; soon?: boolean }) => {
     const isContracted = clientProducts.includes(product.id);
     if (isContracted && onProductChange) {
       onProductChange(product.id);
     } else if (isContracted && product.url) {
       window.location.href = product.url;
     } else {
-      setModalProduct(product);
+      setModalProduct(product as ModalProduct);
     }
   };
 
   return (
     <>
       <nav className="softbar" aria-label="Navegação de produtos Softplan">
-        {/* Logo */}
         <div className="softbar__logo" onClick={onLogoClick} title="Nexus — Visão geral">
           <img src={logoSoftplan} alt="Softplan" style={{ width: 28, height: 28 }} />
         </div>
 
         <div className="softbar__divider" />
 
-        {/* Product items */}
         <ul className="softbar__list">
           {PRODUCTS.map((product) => {
             const isActive = product.id === activeProductId;
             const isContracted = clientProducts.includes(product.id);
             const isHovered = hoveredId === product.id;
-            const notificationCount = product.id === "processos-digitais" ? 6 : null;
+            const notificationCount = notifications[product.id] ?? null;
 
             return (
               <li key={product.id} className="softbar__item-wrapper">
@@ -52,7 +72,7 @@ export default function Softbar({ activeProductId = "processos-digitais", client
                   aria-current={isActive ? "page" : undefined}
                 >
                   <product.Icon />
-                  {notificationCount && (
+                  {notificationCount !== null && (
                     <span className="softbar__notification-badge" aria-label={`${notificationCount} notificações`}>
                       {notificationCount}
                     </span>
@@ -62,7 +82,6 @@ export default function Softbar({ activeProductId = "processos-digitais", client
                   )}
                 </button>
 
-                {/* Tooltip */}
                 {isHovered && (
                   <div className="softbar__tooltip" role="tooltip">
                     <span className={`softbar__tooltip-tag ${isContracted ? "softbar__tooltip-tag--active" : "softbar__tooltip-tag--disabled"}`}>
@@ -77,23 +96,19 @@ export default function Softbar({ activeProductId = "processos-digitais", client
           })}
         </ul>
 
-        {/* Divider + Em breve tools (junto dos produtos) */}
         <div className="softbar__divider" />
+
         <ul className="softbar__list">
-          {[
-            { id: "map", label: "Map", description: "Visualização geoespacial", Icon: IconMap },
-            { id: "analytics", label: "Analytics", description: "Inteligência de dados", Icon: IconAnalytics },
-            { id: "mensageria", label: "Mensageria", description: "Automação de mensagens", Icon: IconMensageria },
-          ].map((tool) => (
+          {SOON_TOOLS.map((tool) => (
             <li key={tool.id} className="softbar__item-wrapper">
               <button
                 className="softbar__item softbar__item--disabled softbar__item--soon"
                 onMouseEnter={() => setHoveredId(tool.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 aria-label={tool.label}
-                onClick={() => setModalProduct({ ...tool, soon: true })}
+                onClick={() => setModalProduct(tool)}
               >
-                <tool.Icon />
+                {tool.Icon && <tool.Icon />}
               </button>
               {hoveredId === tool.id && (
                 <div className="softbar__tooltip" role="tooltip">
@@ -106,7 +121,6 @@ export default function Softbar({ activeProductId = "processos-digitais", client
           ))}
         </ul>
 
-        {/* Bottom: apenas perfil */}
         <div className="softbar__bottom">
           <div className="softbar__divider" />
           <ul className="softbar__list" style={{ marginBottom: "12px" }}>
@@ -117,7 +131,7 @@ export default function Softbar({ activeProductId = "processos-digitais", client
                 onMouseLeave={() => setHoveredId(null)}
                 aria-label="Meu perfil"
               >
-                <IconProfile />
+                <FAIcon icon="fa-duotone fa-user" />
               </button>
               {hoveredId === "profile" && (
                 <div className="softbar__tooltip" role="tooltip">
@@ -130,7 +144,6 @@ export default function Softbar({ activeProductId = "processos-digitais", client
         </div>
       </nav>
 
-      {/* Modal */}
       {modalProduct && (
         <SoftbarModal
           product={modalProduct}
@@ -141,22 +154,14 @@ export default function Softbar({ activeProductId = "processos-digitais", client
   );
 }
 
-function SoftplanLogo() {
-  return null;
-}
-
 function IconMap() {
-  return <i className="fa-duotone fa-map" />;
+  return <FAIcon icon="fa-duotone fa-map" />;
 }
 
 function IconAnalytics() {
-  return <i className="fa-duotone fa-chart-line" />;
+  return <FAIcon icon="fa-duotone fa-chart-line" />;
 }
 
 function IconMensageria() {
-  return <i className="fa-duotone fa-message-check" />;
-}
-
-function IconProfile() {
-  return <i className="fa-duotone fa-user" />;
+  return <FAIcon icon="fa-duotone fa-message-check" />;
 }

@@ -1,14 +1,7 @@
-// ============================================================
-// SOFTBAR — Configuração de Produtos
-// Nexus Project · Softplan
-//
-// Para adicionar um novo produto:
-// 1. Crie o ícone SVG como componente funcional
-// 2. Adicione um objeto no array PRODUCTS
-// 3. O campo `id` deve bater com o que vem da API de contratos
-// ============================================================
+import FAIcon from "./FAIcon";
+import type { ProductConfig } from "./types";
 
-export const PRODUCTS = [
+export const PRODUCTS: ProductConfig[] = [
   {
     id: "procuradorias",
     label: "Procuradorias",
@@ -101,24 +94,22 @@ export const PRODUCTS = [
   },
 ];
 
-// ── Icons ─────────────────────────────────────────────────
-
 function IconProcuradorias() {
-  return <i className="fa-duotone fa-scale-balanced" />;
+  return <FAIcon icon="fa-duotone fa-scale-balanced" />;
 }
 
 function IconObras() {
-  return <i className="fa-duotone fa-helmet-safety" />;
+  return <FAIcon icon="fa-duotone fa-helmet-safety" />;
 }
 
 function IconLicenciamento() {
-  return <i className="fa-duotone fa-tree" />;
+  return <FAIcon icon="fa-duotone fa-tree" />;
 }
 
 function IconGestao() {
-  return <i className="fa-duotone fa-diagram-project" />;
+  return <FAIcon icon="fa-duotone fa-diagram-project" />;
 }
 
 function IconProcessos() {
-  return <i className="fa-duotone fa-folder-tree" />;
+  return <FAIcon icon="fa-duotone fa-folder-tree" />;
 }

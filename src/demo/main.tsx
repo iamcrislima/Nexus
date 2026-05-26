@@ -1,10 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
 import "@fortawesome/fontawesome-pro/js/all.min.js";
+import "./index.css";
+import App from "./App";
 
-createRoot(document.getElementById("root")).render(
+document.documentElement.setAttribute("data-theme", "1doc");
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
   </StrictMode>
