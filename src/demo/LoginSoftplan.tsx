@@ -117,10 +117,8 @@ export default function LoginSoftplan({ onEntrar }: LoginSoftplanProps) {
       {/* ======= DIREITA : formulário ======= */}
       <section className="nx-panel">
         <div className="nx-card">
-          <span className="nx-tenant"><span className="dot" /> Prefeitura de Tubarão</span>
-
-          <h2 className="nx-title">Acesse sua conta</h2>
-          <p className="nx-sub">Use suas credenciais para entrar no ecossistema Softplan.</p>
+          <h2 className="nx-welcome">Boas-vindas à Prefeitura de Tubarão</h2>
+          <p className="nx-sub">Acesse sua conta para entrar no ecossistema Softplan.</p>
 
           <form className="nx-form" onSubmit={handleSubmit}>
             <div className="nx-field">
