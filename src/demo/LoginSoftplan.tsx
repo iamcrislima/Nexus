@@ -2,7 +2,8 @@ import { useState } from "react";
 import "./LoginSoftplan.css";
 
 // Tela de login — porta de entrada MOCKADA do app de demonstração.
-// Reproduz fielmente softplan-login.html (dark navy + índigo).
+// Reproduz fielmente softplan-login-dark-pro_2.html (dark navy + índigo,
+// cards flutuantes arredondados, fontes Plus Jakarta Sans + Inter).
 // onEntrar() é chamado sem validar nada — qualquer credencial autentica.
 
 interface LoginSoftplanProps {
@@ -11,40 +12,32 @@ interface LoginSoftplanProps {
 
 export default function LoginSoftplan({ onEntrar }: LoginSoftplanProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onEntrar();
+    if (loading) return;
+    setLoading(true);
+    // breve estado de carregando antes de autenticar (mock)
+    setTimeout(onEntrar, 1400);
   };
 
   return (
-    <div className="nx-shell">
-      {/* ======= ESQUERDA : constelação de produtos ======= */}
-      <section className="nx-stage">
-        <div className="nx-brand">
-          <div className="mark">
-            <svg viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" clipRule="evenodd" d="M0.868724 20.06H15.165C19.1556 20.06 21.8411 17.5054 21.8411 13.6775C21.8411 9.84951 19.1556 7.51308 15.165 7.51308H7.14813C6.13264 7.51308 5.58919 7.03707 5.58919 6.16437C5.58919 5.29168 6.13264 4.81567 7.14813 4.81567H20.8256V0H6.67609C2.68551 0 0 2.55461 0 6.38255C0 10.2105 2.68551 12.4755 6.67609 12.4755H14.6969C15.7124 12.4755 16.2559 12.9872 16.2559 13.8639C16.2559 14.7405 15.7124 15.2523 14.6969 15.2523H0.868724V20.0679V20.06Z" fill="white" />
-              <path d="M1.58671 22.0679H5.39482V25.876C5.39482 26.7526 4.68476 27.4627 3.80811 27.4627H0V23.6546C0 22.7779 0.710054 22.0679 1.58671 22.0679Z" fill="white" />
-            </svg>
-          </div>
-          <div>
-            <div className="word">Softplan</div>
-          </div>
-        </div>
-
-        <div className="nx-constellation">
+    <div className="nx-login">
+      {/* ======= HERO — constelação ======= */}
+      <section className="hero">
+        <div className="constel">
           <svg viewBox="0 0 560 440" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <linearGradient id="nxLinkGrad" x1="0" y1="0" x2="1" y2="1">
+              <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#6366f1" stopOpacity="0.75" />
                 <stop offset="100%" stopColor="#4f6ef7" stopOpacity="0.15" />
               </linearGradient>
-              <radialGradient id="nxCore" cx="50%" cy="50%" r="50%">
+              <radialGradient id="core" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stopColor="#818cf8" />
                 <stop offset="100%" stopColor="#4f56e0" />
               </radialGradient>
-              <filter id="nxGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="6" result="b" />
                 <feMerge>
                   <feMergeNode in="b" />
@@ -52,94 +45,98 @@ export default function LoginSoftplan({ onEntrar }: LoginSoftplanProps) {
                 </feMerge>
               </filter>
             </defs>
-
-            {/* centro */}
             <g transform="translate(280,220)">
-              {/* linhas até cada produto */}
-              <path className="nx-link" d="M0,0 L-190,-140" />
-              <path className="nx-link" d="M0,0 L200,-96" />
-              <path className="nx-link" d="M0,0 L-210,44" />
-              <path className="nx-link" d="M0,0 L150,150" />
-              <path className="nx-link" d="M0,0 L-80,168" />
-
-              <circle className="nx-core-pulse" r="46" fill="none" stroke="#6366f1" strokeWidth="1.2" />
-              <circle r="34" fill="url(#nxCore)" filter="url(#nxGlow)" />
-              <text className="nx-core-label" x="0" y="5" textAnchor="middle" fontSize="11">Softplan</text>
+              <path className="c-link" d="M0,0 L-190,-140" />
+              <path className="c-link" d="M0,0 L200,-96" />
+              <path className="c-link" d="M0,0 L-210,44" />
+              <path className="c-link" d="M0,0 L150,150" />
+              <path className="c-link" d="M0,0 L-80,168" />
+              <circle className="pulse" r="46" fill="none" stroke="#6366f1" strokeWidth="1.2" />
+              <circle r="34" fill="url(#core)" filter="url(#glow)" />
+              <text className="c-core" x="0" y="5" textAnchor="middle" fontSize="11">Softplan</text>
             </g>
-
-            {/* nós de produto — <g> externo posiciona, <g> interno anima
-               (em SVG o transform do CSS sobrescreve o transform de atributo,
-                então posição e float ficam em grupos separados) */}
             <g transform="translate(90,80)">
-              <g className="nx-node f1">
+              <g className="node f1">
                 <circle r="7" fill="#16163a" stroke="#6366f1" strokeWidth="1.6" />
                 <circle r="2.6" fill="#a5b4fc" />
-                <text className="nx-node-label" x="0" y="-14" textAnchor="middle">Processos Digitais</text>
+                <text className="c-lbl" x="0" y="-14" textAnchor="middle">Processos Digitais</text>
               </g>
             </g>
             <g transform="translate(480,124)">
-              <g className="nx-node f2">
+              <g className="node f2">
                 <circle r="7" fill="#16163a" stroke="#6366f1" strokeWidth="1.6" />
                 <circle r="2.6" fill="#a5b4fc" />
-                <text className="nx-node-label" x="0" y="-14" textAnchor="middle">Procuradorias</text>
+                <text className="c-lbl" x="0" y="-14" textAnchor="middle">Procuradorias</text>
               </g>
             </g>
             <g transform="translate(70,264)">
-              <g className="nx-node f3">
+              <g className="node f3">
                 <circle r="7" fill="#16163a" stroke="#6366f1" strokeWidth="1.6" />
                 <circle r="2.6" fill="#a5b4fc" />
-                <text className="nx-node-label" x="0" y="-14" textAnchor="middle">Obras Públicas</text>
+                <text className="c-lbl" x="0" y="-14" textAnchor="middle">Obras Públicas</text>
               </g>
             </g>
             <g transform="translate(430,370)">
-              <g className="nx-node f1">
+              <g className="node f1">
                 <circle r="7" fill="#16163a" stroke="#6366f1" strokeWidth="1.6" />
                 <circle r="2.6" fill="#a5b4fc" />
-                <text className="nx-node-label" x="0" y="-14" textAnchor="middle">Licenciamento Ambiental</text>
+                <text className="c-lbl" x="0" y="-14" textAnchor="middle">Licenciamento Ambiental</text>
               </g>
             </g>
             <g transform="translate(200,388)">
-              <g className="nx-node f2">
+              <g className="node f2">
                 <circle r="7" fill="#16163a" stroke="#6366f1" strokeWidth="1.6" />
                 <circle r="2.6" fill="#a5b4fc" />
-                <text className="nx-node-label" x="0" y="-14" textAnchor="middle">Gestão de Projetos</text>
+                <text className="c-lbl" x="0" y="-14" textAnchor="middle">Gestão de Projetos</text>
               </g>
             </g>
           </svg>
         </div>
 
-        <div className="nx-tagline">
-          <h1>Um único acesso para <em>todo o ecossistema</em> Softplan.</h1>
-          <p>Entre uma vez e transite entre seus produtos contratados sem novo login. Um só ponto de acesso para a Softplan.</p>
+        <div className="tag">
+          <h2>Um único acesso para <em>todo o ecossistema</em> Softplan.</h2>
+          <p>Entre uma vez e transite entre seus produtos contratados, sem novo login.</p>
         </div>
       </section>
 
-      {/* ======= DIREITA : formulário ======= */}
-      <section className="nx-panel">
-        <div className="nx-card">
-          <h2 className="nx-welcome">Boas-vindas à Prefeitura de Tubarão</h2>
-          <p className="nx-sub">Acesse sua conta para entrar no ecossistema Softplan.</p>
+      {/* ======= PAINEL — form ======= */}
+      <section className="panel">
+        <div className="form">
+          <h1 className="title">Boas-vindas à Prefeitura de Tubarão</h1>
+          <p className="sub">Acesse sua conta para entrar no ecossistema Softplan.</p>
 
-          <form className="nx-form" onSubmit={handleSubmit}>
-            <div className="nx-field">
-              <label htmlFor="nx-email">E-mail</label>
-              <div className="nx-input-wrap">
-                <input className="nx-input" id="nx-email" type="email" autoComplete="username" placeholder="voce@dominio.com.br" />
+          <form className="fields" onSubmit={handleSubmit}>
+            <div className="fg">
+              <label htmlFor="email">E-mail</label>
+              <div className="wrap">
+                <input className="inp" id="email" type="email" autoComplete="username" placeholder="voce@dominio.com.br" />
+                <span className="lead">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <path d="m3 7 9 6 9-6" />
+                  </svg>
+                </span>
               </div>
             </div>
 
-            <div className="nx-field">
-              <label htmlFor="nx-pw">Senha</label>
-              <div className="nx-input-wrap">
+            <div className="fg">
+              <label htmlFor="pw">Senha</label>
+              <div className="wrap">
                 <input
-                  className="nx-input pw"
-                  id="nx-pw"
+                  className="inp pw"
+                  id="pw"
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   placeholder="••••••••"
                 />
+                <span className="lead">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="4" y="11" width="16" height="9" rx="2" />
+                    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                  </svg>
+                </span>
                 <button
-                  className="nx-eye"
+                  className="eye"
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
@@ -160,31 +157,32 @@ export default function LoginSoftplan({ onEntrar }: LoginSoftplanProps) {
               </div>
             </div>
 
-            <div className="nx-row-forgot">
-              <a className="nx-link-a" href="#" onClick={(e) => e.preventDefault()}>Esqueci minha senha</a>
-            </div>
+            <div className="forgot"><a href="#" onClick={(e) => e.preventDefault()}>Esqueci a senha</a></div>
 
-            <button className="nx-btn" type="submit">Entrar</button>
+            <button className="btn" type="submit" disabled={loading}>
+              {loading && <span className="spin" />}
+              <span>{loading ? "Entrando" : "Entrar"}</span>
+            </button>
 
-            <div className="nx-divider">ou continue com</div>
+            <div className="div">ou continue com</div>
 
-            <div className="nx-sso">
-              <button className="nx-sso-btn" type="button" onClick={onEntrar}>
+            <div className="sso">
+              <button className="sso-btn" type="button" onClick={onEntrar}>
                 <span className="gov"><b>gov</b><span className="br">.br</span></span>
               </button>
-              <button className="nx-sso-btn" type="button" onClick={onEntrar}>
-                <span className="nx-adgrid"><span /><span /><span /><span /></span>
+              <button className="sso-btn" type="button" onClick={onEntrar}>
+                <span className="adg"><span /><span /><span /><span /></span>
                 Active Directory
               </button>
             </div>
           </form>
 
-          <div className="nx-foot">
+          <div className="foot">
             <a href="#" onClick={(e) => e.preventDefault()}>Central de Atendimento</a>
-            <span className="tiny-brand">
+            <span className="fb">
               <svg viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fillRule="evenodd" clipRule="evenodd" d="M0.868724 20.06H15.165C19.1556 20.06 21.8411 17.5054 21.8411 13.6775C21.8411 9.84951 19.1556 7.51308 15.165 7.51308H7.14813C6.13264 7.51308 5.58919 7.03707 5.58919 6.16437C5.58919 5.29168 6.13264 4.81567 7.14813 4.81567H20.8256V0H6.67609C2.68551 0 0 2.55461 0 6.38255C0 10.2105 2.68551 12.4755 6.67609 12.4755H14.6969C15.7124 12.4755 16.2559 12.9872 16.2559 13.8639C16.2559 14.7405 15.7124 15.2523 14.6969 15.2523H0.868724V20.0679V20.06Z" fill="white" />
-                <path d="M1.58671 22.0679H5.39482V25.876C5.39482 26.7526 4.68476 27.4627 3.80811 27.4627H0V23.6546C0 22.7779 0.710054 22.0679 1.58671 22.0679Z" fill="white" />
+                <path fillRule="evenodd" clipRule="evenodd" d="M0.868724 20.06H15.165C19.1556 20.06 21.8411 17.5054 21.8411 13.6775C21.8411 9.84951 19.1556 7.51308 15.165 7.51308H7.14813C6.13264 7.51308 5.58919 7.03707 5.58919 6.16437C5.58919 5.29168 6.13264 4.81567 7.14813 4.81567H20.8256V0H6.67609C2.68551 0 0 2.55461 0 6.38255C0 10.2105 2.68551 12.4755 6.67609 12.4755H14.6969C15.7124 12.4755 16.2559 12.9872 16.2559 13.8639C16.2559 14.7405 15.7124 15.2523 14.6969 15.2523H0.868724V20.0679V20.06Z" fill="rgba(255,255,255,0.30)" />
+                <path d="M1.58671 22.0679H5.39482V25.876C5.39482 26.7526 4.68476 27.4627 3.80811 27.4627H0V23.6546C0 22.7779 0.710054 22.0679 1.58671 22.0679Z" fill="rgba(255,255,255,0.30)" />
               </svg>
               Softplan
             </span>
