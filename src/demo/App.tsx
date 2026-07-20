@@ -5,6 +5,7 @@ import Subheader from "./Subheader";
 import CentralDeAcoes from "./CentralDeAcoes";
 import ObrasGov from "./ObrasGov";
 import NexusHome from "./NexusHome";
+import LoginSoftplan from "./LoginSoftplan";
 
 // DEMO: Simulação da Softbar no contexto Nexus
 // activeProductId  → ID do produto atual (vem do app host)
@@ -17,7 +18,12 @@ const MOCK_NOTIFICATIONS: Record<string, number> = {
 };
 
 export default function App() {
+  const [autenticado, setAutenticado] = useState(false);
   const [activeProduct, setActiveProduct] = useState("processos-digitais");
+
+  if (!autenticado) {
+    return <LoginSoftplan onEntrar={() => setAutenticado(true)} />;
+  }
 
   return (
     <div style={{ height: "100vh", width: "100vw", overflow: "hidden", display: "flex" }}>
