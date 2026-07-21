@@ -6,6 +6,8 @@ import CentralDeAcoes from "./CentralDeAcoes";
 import ObrasGov from "./ObrasGov";
 import NexusHome from "./NexusHome";
 import LoginSoftplan from "./LoginSoftplan";
+import CadastroModal from "./CadastroModal";
+import MinhaConta from "./MinhaConta";
 
 // DEMO: Simulação da Softbar no contexto Nexus
 // activeProductId  → ID do produto atual (vem do app host)
@@ -19,6 +21,8 @@ const MOCK_NOTIFICATIONS: Record<string, number> = {
 
 export default function App() {
   const [autenticado, setAutenticado] = useState(false);
+  // mock: 1º acesso exige ativação da conta (cadastro) sobre a home
+  const [precisaCadastro, setPrecisaCadastro] = useState(true);
   const [activeProduct, setActiveProduct] = useState("processos-digitais");
 
   if (!autenticado) {
@@ -26,6 +30,7 @@ export default function App() {
   }
 
   return (
+    <>
     <div style={{ height: "100vh", width: "100vw", overflow: "hidden", display: "flex" }}>
       <Softbar
         activeProductId={activeProduct}
@@ -33,6 +38,7 @@ export default function App() {
         notifications={MOCK_NOTIFICATIONS}
         onProductChange={setActiveProduct}
         onLogoClick={() => setActiveProduct("nexus-home")}
+        onProfileClick={() => setActiveProduct("minha-conta")}
       />
 
       <main style={{
@@ -54,7 +60,14 @@ export default function App() {
         )}
 
         {activeProduct === "obras" && <ObrasGov />}
+
+        {activeProduct === "minha-conta" && <MinhaConta />}
       </main>
     </div>
+
+    {precisaCadastro && (
+      <CadastroModal onConcluir={() => setPrecisaCadastro(false)} />
+    )}
+    </>
   );
 }

@@ -1,0 +1,91 @@
+/* ============================================================
+   MinhaConta — tela de perfil / conta única (dark navy + índigo).
+   Renderiza como tela ativa dentro do <main> do shell (a Softbar
+   real fica ao lado). CSS próprio (o projeto não usa 1DS), tudo
+   escopado sob .nx-conta para não colidir com o resto do demo
+   (nomes genéricos: .card, .btn, .inp, h1, label, .row, .grid2…).
+   ============================================================ */
+
+.nx-conta {
+  --bg-deep:#0f0f1a;--bg:#1a1a2e;--surface:#16163a;--surface-2:#12122a;--elevated:#1e1e3f;
+  --indigo:#6366f1;--indigo-600:#4f56e0;--indigo-300:#a5b4fc;--blue:#4f6ef7;
+  --green:#34d399;--amber-300:#fbbf24;
+  --text:#fff;--t70:rgba(255,255,255,.7);--t45:rgba(255,255,255,.45);--t30:rgba(255,255,255,.3);
+  --line:rgba(255,255,255,.09);--line-soft:rgba(255,255,255,.06);
+  --display:"Plus Jakarta Sans",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;
+
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+.nx-conta *,.nx-conta *::before,.nx-conta *::after{box-sizing:border-box;margin:0;padding:0}
+
+.nx-conta .topbar{position:sticky;top:0;z-index:5;background:rgba(15,15,26,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px 40px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t45)}
+.nx-conta .topbar b{color:var(--t70);font-weight:600}
+.nx-conta .topbar svg{width:15px;height:15px}
+
+.nx-conta .wrap{max-width:860px;margin:0 auto;padding:34px 40px 60px}
+.nx-conta .page-h{font-family:var(--display);font-weight:800;font-size:28px;letter-spacing:-.02em}
+.nx-conta .page-sub{margin-top:6px;font-size:14px;color:var(--t45)}
+
+/* hero perfil */
+.nx-conta .hero{margin-top:26px;background:linear-gradient(120deg,#20204a 0%,var(--surface) 60%);border:1px solid var(--line);border-radius:18px;padding:24px;display:flex;align-items:center;gap:20px}
+.nx-conta .avatar{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--indigo-600));display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:28px;flex-shrink:0;box-shadow:0 8px 22px rgba(99,102,241,.4)}
+.nx-conta .hero-info{flex:1;min-width:0}
+.nx-conta .hero-name{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.01em}
+.nx-conta .hero-mail{margin-top:3px;font-size:13.5px;color:var(--t45)}
+.nx-conta .chips{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.nx-conta .chip{font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);color:var(--t70);display:inline-flex;align-items:center;gap:6px}
+.nx-conta .chip .d{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.nx-conta .chip.acc{color:var(--indigo-300);border-color:rgba(99,102,241,.3);background:rgba(99,102,241,.12)}
+
+/* cards de seção */
+.nx-conta .card{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.nx-conta .card-h{padding:20px 24px 0}
+.nx-conta .card-h h2{font-family:var(--display);font-weight:700;font-size:16px}
+.nx-conta .card-h p{margin-top:4px;font-size:12.5px;color:var(--t45)}
+.nx-conta .card-b{padding:20px 24px 24px}
+
+.nx-conta .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.nx-conta .fg{margin-bottom:2px}
+.nx-conta .fg.full{grid-column:1/-1}
+.nx-conta label{display:block;font-size:12px;font-weight:600;color:var(--t70);margin-bottom:7px}
+.nx-conta .inp{width:100%;height:46px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;font-family:var(--body);padding:0 13px;transition:.18s}
+.nx-conta .inp:focus{outline:none;background:var(--elevated);border-color:var(--indigo);box-shadow:0 0 0 4px rgba(99,102,241,.22)}
+.nx-conta .inp:read-only{color:var(--t45);cursor:not-allowed;background:rgba(255,255,255,.03)}
+.nx-conta .locked{position:relative}
+.nx-conta .locked .lk{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--t30)}
+.nx-conta .locked .lk svg{width:15px;height:15px;display:block}
+.nx-conta .hint{margin-top:6px;font-size:11px;color:var(--t45);display:flex;align-items:center;gap:5px}
+.nx-conta .hint svg{width:12px;height:12px}
+
+.nx-conta .divider{height:1px;background:var(--line-soft);margin:20px 0}
+.nx-conta .row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nx-conta .row .k{font-size:13px;font-weight:600;color:var(--t70)}
+.nx-conta .row .v{font-size:12.5px;color:var(--t45);margin-top:3px}
+.nx-conta .accbadges{display:flex;gap:8px}
+.nx-conta .accbadge{font-size:12px;font-weight:600;color:var(--text);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:6px 11px;display:flex;align-items:center;gap:7px}
+.nx-conta .accbadge svg{width:14px;height:14px;color:var(--indigo-300)}
+
+.nx-conta .prodgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.nx-conta .prod{display:flex;align-items:center;gap:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+.nx-conta .prod .ic{width:34px;height:34px;border-radius:9px;background:rgba(99,102,241,.14);border:1px solid rgba(99,102,241,.28);display:grid;place-items:center;color:var(--indigo-300);flex-shrink:0}
+.nx-conta .prod .ic svg{width:17px;height:17px}
+.nx-conta .prod .nm{font-size:13px;font-weight:600}
+.nx-conta .prod .st{font-size:11px;color:var(--green);margin-top:2px;display:flex;align-items:center;gap:5px}
+.nx-conta .prod .st .d{width:5px;height:5px;border-radius:50%;background:var(--green)}
+
+.nx-conta .actions{margin-top:20px;display:flex;justify-content:flex-end;gap:12px}
+.nx-conta .btn{height:44px;border:none;border-radius:10px;font-size:13.5px;font-weight:600;font-family:var(--body);cursor:pointer;padding:0 20px;display:inline-flex;align-items:center;gap:8px;transition:.18s}
+.nx-conta .btn.primary{background:linear-gradient(135deg,var(--indigo),var(--indigo-600));color:#fff;box-shadow:0 6px 18px rgba(99,102,241,.32)}
+.nx-conta .btn.primary:hover{filter:brightness(1.06)}
+.nx-conta .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--t70)}
+.nx-conta .btn.ghost:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+.nx-conta .pwwrap{position:relative}
+.nx-conta .pweye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;display:grid;place-items:center;background:none;border:none;cursor:pointer;color:var(--t45);border-radius:7px}
+.nx-conta .pweye:hover{color:var(--t70);background:rgba(255,255,255,.05)}
+.nx-conta .pweye svg{width:17px;height:17px}

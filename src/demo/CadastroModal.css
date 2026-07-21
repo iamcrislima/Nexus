@@ -1,0 +1,87 @@
+/* ============================================================
+   CadastroModal — ativação de conta (1º acesso), 2 passos.
+   Sobreposto à home real. CSS próprio (o projeto não usa 1DS),
+   tudo escopado sob .nx-cadastro (a raiz É o scrim) para não
+   colidir com o resto do demo (nomes genéricos: .modal, .btn,
+   .inp, h1, label, .body, .grid…).
+   ============================================================ */
+
+.nx-cadastro {
+  --bg-deep:#0f0f1a;--bg:#1a1a2e;--surface:#17172b;--surface-2:#101021;--elevated:#20203c;
+  --indigo:#5b60e6;--indigo-700:#4a4fd0;--indigo-300:#9ea6f2;
+  --text:#f2f3f7;--t70:rgba(242,243,247,.68);--t45:rgba(242,243,247,.44);--t28:rgba(242,243,247,.28);
+  --line:rgba(255,255,255,.08);--line-soft:rgba(255,255,255,.05);
+  --display:"Plus Jakarta Sans",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;
+
+  position:fixed;inset:0;
+  background:rgba(6,6,14,.72);backdrop-filter:blur(2px);
+  display:grid;place-items:center;padding:24px;z-index:1000;
+  font-family:var(--body);color:var(--text);-webkit-font-smoothing:antialiased;
+}
+.nx-cadastro *,.nx-cadastro *::before,.nx-cadastro *::after{box-sizing:border-box;margin:0;padding:0}
+
+/* modal */
+.nx-cadastro .modal{width:100%;max-width:512px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.5);max-height:calc(100vh - 48px);display:flex;flex-direction:column;overflow:hidden;animation:nx-cad-in .35s cubic-bezier(.2,.7,.3,1) both}
+@keyframes nx-cad-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.nx-cadastro .head{padding:24px 28px 0}
+.nx-cadastro .head-row{display:flex;align-items:center;justify-content:space-between}
+.nx-cadastro .bmark{display:flex;align-items:center;gap:9px}
+.nx-cadastro .bmark .mk{width:26px;height:26px;border-radius:7px;background:var(--indigo);display:grid;place-items:center}
+.nx-cadastro .bmark .mk svg{width:11px;height:14px}
+.nx-cadastro .bmark span{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:-.01em}
+.nx-cadastro .stepnum{font-size:11.5px;color:var(--t45);font-weight:500}
+.nx-cadastro .prog{height:3px;background:var(--line);border-radius:99px;margin-top:16px;overflow:hidden}
+.nx-cadastro .prog i{display:block;height:100%;background:var(--indigo);border-radius:99px;transition:width .35s ease}
+
+.nx-cadastro .body{padding:22px 28px 0;overflow-y:auto}
+.nx-cadastro h1{font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;line-height:1.25}
+.nx-cadastro .lead{margin-top:9px;font-size:13.5px;line-height:1.6;color:var(--t70)}
+.nx-cadastro .oneoff{margin-top:16px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t45)}
+.nx-cadastro .oneoff svg{width:15px;height:15px;flex-shrink:0}
+
+/* linha vinculado */
+.nx-cadastro .linked{margin-top:20px;display:flex;align-items:center;gap:11px;padding:12px 14px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px}
+.nx-cadastro .linked .ic{width:30px;height:30px;border-radius:8px;background:#1e1e38;display:grid;place-items:center;color:var(--t45);flex-shrink:0}
+.nx-cadastro .linked .ic svg{width:15px;height:15px}
+.nx-cadastro .linked .tx{flex:1;min-width:0}
+.nx-cadastro .linked .tx b{font-size:12.5px;font-weight:600;display:block}
+.nx-cadastro .linked .tx small{font-size:11.5px;color:var(--t45)}
+.nx-cadastro .linked .tag{font-size:10.5px;font-weight:600;color:var(--t45);text-transform:uppercase;letter-spacing:.06em}
+
+/* seções de formulário */
+.nx-cadastro .sec{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t45);margin:24px 0 13px;display:flex;align-items:center;gap:12px}
+.nx-cadastro .sec::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.nx-cadastro .grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.nx-cadastro .fg{margin-bottom:0}
+.nx-cadastro .fg.full{grid-column:1/-1}
+.nx-cadastro label{display:block;font-size:12px;font-weight:500;color:var(--t70);margin-bottom:6px}
+.nx-cadastro .inp{width:100%;height:44px;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;color:var(--text);font-size:13.5px;font-family:var(--body);padding:0 12px;transition:border-color .16s,box-shadow .16s}
+.nx-cadastro .inp::placeholder{color:var(--t28)}
+.nx-cadastro .inp:focus{outline:none;border-color:var(--indigo);box-shadow:0 0 0 3px rgba(91,96,230,.2)}
+.nx-cadastro select.inp{appearance:none;-webkit-appearance:none;padding-right:32px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f2f3f7' stroke-opacity='0.4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.nx-cadastro select.inp option{background:#17172b;color:#fff}
+.nx-cadastro .pwwrap{position:relative}
+.nx-cadastro .pweye{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:32px;height:32px;display:grid;place-items:center;background:none;border:none;cursor:pointer;color:var(--t45);border-radius:7px}
+.nx-cadastro .pweye:hover{color:var(--t70)}
+.nx-cadastro .pweye svg{width:16px;height:16px}
+.nx-cadastro .match{margin-top:10px;font-size:11.5px;display:flex;align-items:center;gap:6px;color:#4ade80;opacity:0;transition:opacity .16s}
+.nx-cadastro .match.show{opacity:1}
+.nx-cadastro .match svg{width:13px;height:13px}
+.nx-cadastro .consent{display:flex;gap:10px;align-items:flex-start;margin-top:20px;font-size:12px;color:var(--t45);line-height:1.5;cursor:pointer}
+.nx-cadastro .consent input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--line);border-radius:5px;background:var(--surface-2);flex-shrink:0;margin-top:1px;cursor:pointer;position:relative;transition:.16s}
+.nx-cadastro .consent input:checked{background:var(--indigo);border-color:var(--indigo)}
+.nx-cadastro .consent input:checked::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.nx-cadastro .consent a{color:var(--indigo-300);text-decoration:none}
+.nx-cadastro .consent a:hover{text-decoration:underline}
+.nx-cadastro .btn.primary:disabled{opacity:.45;cursor:not-allowed}
+
+/* rodapé fixo */
+.nx-cadastro .foot{padding:18px 28px;border-top:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:24px}
+.nx-cadastro .foot .priv{font-size:11px;color:var(--t45);max-width:230px;line-height:1.4}
+.nx-cadastro .foot .btns{display:flex;gap:10px}
+.nx-cadastro .btn{height:42px;border:none;border-radius:9px;font-size:13.5px;font-weight:600;font-family:var(--body);cursor:pointer;padding:0 20px;transition:background .16s,border-color .16s}
+.nx-cadastro .btn.primary{background:var(--indigo);color:#fff}
+.nx-cadastro .btn.primary:hover{background:var(--indigo-700)}
+.nx-cadastro .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--t70)}
+.nx-cadastro .btn.ghost:hover{border-color:rgba(255,255,255,.22);color:var(--text)}

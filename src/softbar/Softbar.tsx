@@ -12,6 +12,7 @@ interface SoftbarProps {
   notifications?: Record<string, number>;
   onProductChange?: (id: string) => void;
   onLogoClick?: () => void;
+  onProfileClick?: () => void;
 }
 
 const SOON_TOOLS: ModalProduct[] = [
@@ -26,6 +27,7 @@ export default function Softbar({
   notifications = {},
   onProductChange,
   onLogoClick,
+  onProfileClick,
 }: SoftbarProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [modalProduct, setModalProduct] = useState<ModalProduct | null>(null);
@@ -126,7 +128,8 @@ export default function Softbar({
           <ul className="softbar__list" style={{ marginBottom: "12px" }}>
             <li className="softbar__item-wrapper">
               <button
-                className="softbar__item softbar__item--disabled"
+                className={["softbar__item", onProfileClick ? "" : "softbar__item--disabled"].filter(Boolean).join(" ")}
+                onClick={onProfileClick}
                 onMouseEnter={() => setHoveredId("profile")}
                 onMouseLeave={() => setHoveredId(null)}
                 aria-label="Meu perfil"
