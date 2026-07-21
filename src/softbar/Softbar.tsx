@@ -46,13 +46,13 @@ export default function Softbar({
   return (
     <>
       <nav className="softbar" aria-label="Navegação de produtos Softplan">
-        <div className="softbar__logo" onClick={onLogoClick} title="Nexus — Visão geral">
+        <div id="sb-visao-geral" className="softbar__logo" onClick={onLogoClick} title="Nexus — Visão geral">
           <img src={logoSoftplan} alt="Softplan" style={{ width: 28, height: 28 }} />
         </div>
 
         <div className="softbar__divider" />
 
-        <ul className="softbar__list">
+        <ul id="sb-produtos" className="softbar__list">
           {PRODUCTS.map((product) => {
             const isActive = product.id === activeProductId;
             const isContracted = clientProducts.includes(product.id);
@@ -128,6 +128,7 @@ export default function Softbar({
           <ul className="softbar__list" style={{ marginBottom: "12px" }}>
             <li className="softbar__item-wrapper">
               <button
+                id="sb-meu-perfil"
                 className={["softbar__item", onProfileClick ? "" : "softbar__item--disabled"].filter(Boolean).join(" ")}
                 onClick={onProfileClick}
                 onMouseEnter={() => setHoveredId("profile")}

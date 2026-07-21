@@ -1,0 +1,69 @@
+/* ============================================================
+   OnboardingTour — tour guiado com holofote (spotlight) + balão.
+   Aparece após o onConcluir do modal de cadastro. CSS próprio
+   (o projeto não usa 1DS), tudo escopado sob .nx-tour.
+   ============================================================ */
+
+.nx-tour {
+  --bg:#1a1a2e;--surface:#16163a;--surface-2:#12122a;--elevated:#1e1e3f;
+  --indigo:#6366f1;--indigo-600:#4f56e0;--indigo-300:#a5b4fc;--blue:#4f6ef7;
+  --text:#fff;--t70:rgba(255,255,255,.7);--t45:rgba(255,255,255,.45);--t30:rgba(255,255,255,.3);
+  --line:rgba(255,255,255,.09);
+  --display:"Plus Jakarta Sans",system-ui,sans-serif;--body:"Inter",system-ui,sans-serif;
+
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  font-family: var(--body);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+.nx-tour *,.nx-tour *::before,.nx-tour *::after{box-sizing:border-box;margin:0;padding:0}
+
+/* overlay escuro cheio (passos centrais, sem alvo) */
+.nx-tour .veil{position:fixed;inset:0;background:rgba(6,6,14,.74);backdrop-filter:blur(2px)}
+
+/* holofote: recorte iluminado sobre o alvo, escurecendo o resto via box-shadow gigante */
+.nx-tour .spot{
+  position:fixed;border-radius:14px;
+  box-shadow:0 0 0 9999px rgba(6,6,14,.74), 0 0 0 2px rgba(99,102,241,.9), 0 0 24px 4px rgba(99,102,241,.5);
+  pointer-events:none;
+}
+.nx-tour .spot::after{
+  content:"";position:absolute;inset:-2px;border-radius:14px;border:2px solid var(--indigo-300);
+  animation:nx-tour-pulse 1.8s ease-out infinite;
+}
+@keyframes nx-tour-pulse{0%{opacity:.9;transform:scale(1)}70%{opacity:0;transform:scale(1.12)}100%{opacity:0}}
+
+/* balão */
+.nx-tour .balloon{
+  position:fixed;width:320px;max-width:calc(100vw - 32px);
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);padding:22px 22px 18px;
+  animation:nx-tour-in .3s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes nx-tour-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.nx-tour .balloon.center{left:50%;top:50%;transform:translate(-50%,-50%);width:400px}
+.nx-tour .balloon.center.enter{animation:nx-tour-in-c .3s cubic-bezier(.2,.7,.3,1) both}
+@keyframes nx-tour-in-c{from{opacity:0;transform:translate(-50%,-46%)}to{opacity:1;transform:translate(-50%,-50%)}}
+
+.nx-tour .b-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--indigo-300);background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.3);border-radius:999px;padding:4px 10px;margin-bottom:12px}
+.nx-tour .b-badge svg{width:13px;height:13px}
+.nx-tour h3{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em;line-height:1.3}
+.nx-tour .b-text{margin-top:8px;font-size:13.5px;line-height:1.6;color:var(--t70)}
+
+.nx-tour .b-foot{margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nx-tour .dots{display:flex;gap:6px}
+.nx-tour .dots i{width:7px;height:7px;border-radius:50%;background:var(--line);transition:.2s}
+.nx-tour .dots i.on{background:var(--indigo);width:20px;border-radius:99px}
+.nx-tour .b-btns{display:flex;align-items:center;gap:8px}
+
+.nx-tour .btn{height:38px;border:none;border-radius:9px;font-size:13px;font-weight:600;font-family:var(--body);cursor:pointer;padding:0 16px;transition:.16s}
+.nx-tour .btn.primary{background:linear-gradient(135deg,var(--indigo),var(--indigo-600));color:#fff;box-shadow:0 6px 16px rgba(99,102,241,.3)}
+.nx-tour .btn.primary:hover{filter:brightness(1.07)}
+.nx-tour .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--t70)}
+.nx-tour .btn.ghost:hover{border-color:rgba(255,255,255,.22);color:var(--text)}
+.nx-tour .skip{background:none;border:none;color:var(--t45);font-family:var(--body);font-size:12.5px;font-weight:500;cursor:pointer}
+.nx-tour .skip:hover{color:var(--t70)}
+
+@media (prefers-reduced-motion: reduce){.nx-tour *{animation:none !important;transition:none !important}}

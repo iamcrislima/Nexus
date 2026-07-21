@@ -8,6 +8,7 @@ import NexusHome from "./NexusHome";
 import LoginSoftplan from "./LoginSoftplan";
 import CadastroModal from "./CadastroModal";
 import MinhaConta from "./MinhaConta";
+import OnboardingTour from "./OnboardingTour";
 
 // DEMO: Simulação da Softbar no contexto Nexus
 // activeProductId  → ID do produto atual (vem do app host)
@@ -23,6 +24,8 @@ export default function App() {
   const [autenticado, setAutenticado] = useState(false);
   // mock: 1º acesso exige ativação da conta (cadastro) sobre a home
   const [precisaCadastro, setPrecisaCadastro] = useState(true);
+  // tour guiado: acionado logo após concluir o cadastro
+  const [mostrarTour, setMostrarTour] = useState(false);
   const [activeProduct, setActiveProduct] = useState("processos-digitais");
 
   if (!autenticado) {
@@ -66,8 +69,15 @@ export default function App() {
     </div>
 
     {precisaCadastro && (
-      <CadastroModal onConcluir={() => setPrecisaCadastro(false)} />
+      <CadastroModal
+        onConcluir={() => {
+          setPrecisaCadastro(false);
+          setMostrarTour(true);
+        }}
+      />
     )}
+
+    {mostrarTour && <OnboardingTour onFim={() => setMostrarTour(false)} />}
     </>
   );
 }
