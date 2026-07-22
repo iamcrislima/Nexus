@@ -89,3 +89,19 @@
 .nx-conta .pweye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;display:grid;place-items:center;background:none;border:none;cursor:pointer;color:var(--t45);border-radius:7px}
 .nx-conta .pweye:hover{color:var(--t70);background:rgba(255,255,255,.05)}
 .nx-conta .pweye svg{width:17px;height:17px}
+
+/* contas vinculadas */
+.nx-conta .accts-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.nx-conta .btn.ghost.sm{height:36px;padding:0 14px;font-size:12.5px}
+.nx-conta .btn.ghost.sm svg{width:15px;height:15px}
+.nx-conta .accts{display:flex;flex-direction:column;gap:10px}
+.nx-conta .acct{display:flex;align-items:center;gap:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.nx-conta .acct-ic{width:36px;height:36px;border-radius:9px;background:var(--elevated);border:1px solid var(--line);display:grid;place-items:center;color:var(--indigo-300);flex-shrink:0}
+.nx-conta .acct-ic svg{width:17px;height:17px}
+.nx-conta .acct-glyph{font-family:var(--display);font-weight:700;font-size:13px;color:var(--indigo-300)}
+.nx-conta .acct-tx{flex:1;min-width:0}
+.nx-conta .acct-id{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nx-conta .acct-or{font-size:11.5px;color:var(--t45);margin-top:2px}
+.nx-conta .acct-tag{font-size:11px;font-weight:600;color:var(--indigo-300);background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.3);border-radius:999px;padding:4px 11px;flex-shrink:0}
+.nx-conta .acct-unlink{font-size:12px;font-weight:600;font-family:var(--body);color:var(--t45);background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;flex-shrink:0;transition:.16s}
+.nx-conta .acct-unlink:hover{color:#fb7185;border-color:rgba(251,113,133,.4);background:rgba(251,113,133,.08)}
