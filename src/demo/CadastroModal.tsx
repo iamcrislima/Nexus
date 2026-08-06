@@ -9,6 +9,12 @@ import "./CadastroModal.css";
 
 interface CadastroModalProps {
   onConcluir: () => void;
+  // inline: renderiza sem scrim/overlay, para caber dentro de um painel
+  // (ex.: no painel direito da tela de login), no lugar de flutuar como modal.
+  inline?: boolean;
+  // onVoltarLogin: se fornecido, exibe "Voltar" no passo 1 para retornar à
+  // tela de login (ex.: desfazer a autenticação e mostrar o form de login).
+  onVoltarLogin?: () => void;
 }
 
 // máscara de CPF: 000.000.000-00 (idêntica ao HTML de referência)
@@ -35,7 +41,7 @@ const EyeIcon = () => (
   </svg>
 );
 
-export default function CadastroModal({ onConcluir }: CadastroModalProps) {
+export default function CadastroModal({ onConcluir, inline = false, onVoltarLogin }: CadastroModalProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [showPw1, setShowPw1] = useState(false);
   const [showPw2, setShowPw2] = useState(false);
@@ -56,8 +62,8 @@ export default function CadastroModal({ onConcluir }: CadastroModalProps) {
   };
 
   return (
-    <div className="nx-cadastro">
-      <div className="modal" role="dialog" aria-modal="true">
+    <div className={`nx-cadastro${inline ? " inline" : ""}`}>
+      <div className="modal" role={inline ? undefined : "dialog"} aria-modal={inline ? undefined : true}>
         <div className="head">
           <div className="head-row">
             <div className="bmark">
@@ -164,6 +170,7 @@ export default function CadastroModal({ onConcluir }: CadastroModalProps) {
         <div className="foot">
           <span className="priv">Usamos seus dados apenas para unificar seu acesso aos produtos contratados.</span>
           <div className="btns">
+            {!s2 && onVoltarLogin && <button className="btn ghost" type="button" onClick={onVoltarLogin}>Voltar</button>}
             {s2 && <button className="btn ghost" type="button" onClick={() => setStep(1)}>Voltar</button>}
             {!s2 && <button className="btn primary" type="button" onClick={() => setStep(2)}>Continuar</button>}
             {s2 && (

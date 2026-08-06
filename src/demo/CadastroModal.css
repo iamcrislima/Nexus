@@ -24,6 +24,17 @@
 .nx-cadastro .modal{width:100%;max-width:512px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.5);max-height:calc(100vh - 48px);display:flex;flex-direction:column;overflow:hidden;animation:nx-cad-in .35s cubic-bezier(.2,.7,.3,1) both}
 @keyframes nx-cad-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
+/* ===== modo inline: dentro do painel do login, sem scrim/card ===== */
+.nx-cadastro.inline{position:static;inset:auto;background:none;backdrop-filter:none;padding:0;z-index:auto;display:flex;width:100%;max-width:400px;max-height:100%}
+.nx-cadastro.inline .modal{background:none;border:none;box-shadow:none;border-radius:0;max-width:100%;max-height:100%;animation:none}
+.nx-cadastro.inline .head{padding:0}
+.nx-cadastro.inline .body{padding:20px 0 0}
+.nx-cadastro.inline .foot{padding:16px 0 0;margin-top:20px;border-top:1px solid var(--line);background:none}
+/* impede o box-shadow do botão do login (.nx-login .btn) de vazar nos
+   botões do cadastro, que são flat — o glow índigo ficava estranho */
+.nx-cadastro.inline .btn,
+.nx-cadastro.inline .btn:hover{box-shadow:none}
+
 .nx-cadastro .head{padding:24px 28px 0}
 .nx-cadastro .head-row{display:flex;align-items:center;justify-content:space-between}
 .nx-cadastro .bmark{display:flex;align-items:center;gap:9px}

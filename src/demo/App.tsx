@@ -28,8 +28,28 @@ export default function App() {
   const [mostrarTour, setMostrarTour] = useState(false);
   const [activeProduct, setActiveProduct] = useState("processos-digitais");
 
-  if (!autenticado) {
-    return <LoginSoftplan onEntrar={() => setAutenticado(true)} />;
+  // Login e atualização cadastral acontecem na MESMA tela: após autenticar, o
+  // painel direito da LoginSoftplan (onde fica o "Boas-vindas") passa a exibir a
+  // atualização cadastral INLINE (sem modal). A arte da constelação permanece.
+  // Só depois de concluir é que entra a home + tour.
+  if (!autenticado || precisaCadastro) {
+    return (
+      <LoginSoftplan
+        onEntrar={() => setAutenticado(true)}
+        painel={
+          autenticado && precisaCadastro ? (
+            <CadastroModal
+              inline
+              onVoltarLogin={() => setAutenticado(false)}
+              onConcluir={() => {
+                setPrecisaCadastro(false);
+                setMostrarTour(true);
+              }}
+            />
+          ) : undefined
+        }
+      />
+    );
   }
 
   return (
@@ -67,15 +87,6 @@ export default function App() {
         {activeProduct === "minha-conta" && <MinhaConta />}
       </main>
     </div>
-
-    {precisaCadastro && (
-      <CadastroModal
-        onConcluir={() => {
-          setPrecisaCadastro(false);
-          setMostrarTour(true);
-        }}
-      />
-    )}
 
     {mostrarTour && <OnboardingTour onFim={() => setMostrarTour(false)} />}
     </>

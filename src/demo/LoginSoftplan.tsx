@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import "./LoginSoftplan.css";
 
 // Tela de login — porta de entrada MOCKADA do app de demonstração.
 // Reproduz fielmente softplan-login-dark-pro_2.html (dark navy + índigo,
 // cards flutuantes arredondados, fontes Plus Jakarta Sans + Inter).
 // onEntrar() é chamado sem validar nada — qualquer credencial autentica.
+//
+// painel: conteúdo opcional que substitui o formulário de login no painel
+// direito (ex.: a atualização cadastral inline após autenticar). A arte da
+// constelação à esquerda permanece.
 
 interface LoginSoftplanProps {
   onEntrar: () => void;
+  painel?: ReactNode;
 }
 
-export default function LoginSoftplan({ onEntrar }: LoginSoftplanProps) {
+export default function LoginSoftplan({ onEntrar, painel }: LoginSoftplanProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Ao voltar do cadastro para o formulário de login (painel volta a ser
+  // nulo), garante que o botão "Entrar" não fique preso em "Entrando".
+  useEffect(() => {
+    if (!painel) setLoading(false);
+  }, [painel]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,8 +110,9 @@ export default function LoginSoftplan({ onEntrar }: LoginSoftplanProps) {
         </div>
       </section>
 
-      {/* ======= PAINEL — form ======= */}
+      {/* ======= PAINEL — form de login OU conteúdo injetado (cadastro inline) ======= */}
       <section className="panel">
+        {painel ?? (
         <div className="form">
           <h1 className="title">Boas-vindas à Prefeitura de Tubarão</h1>
           <p className="sub">Acesse sua conta para entrar no ecossistema Softplan.</p>
@@ -188,6 +200,7 @@ export default function LoginSoftplan({ onEntrar }: LoginSoftplanProps) {
             </span>
           </div>
         </div>
+        )}
       </section>
     </div>
   );
