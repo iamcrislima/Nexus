@@ -1,6 +1,7 @@
 # HANDOFF — Softbar · Nexus Project
 > Data: 2026-05-26
-> Stack: React 19 + TypeScript + Vite + FontAwesome Pro 7
+> Stack: React 19 + TypeScript + Vite + 1DS (@1doc/1ds-react 2.26.0). FontAwesome Pro 7 só na demo
+> Atualizado em 2026-10-30: a Softbar usa os componentes do 1DS com a paleta Nexus (src/softbar/nexus-palette.css), com o ícone atenuado por estado. Spec em docs/nexus-softbar-handoff-v1.2-hex.html
 
 ---
 
@@ -42,14 +43,14 @@ Softbar/
 │
 ├── src/
 │   ├── softbar/                ← MÓDULO ENTREGÁVEL — o que sai daqui para produção
-│   │   ├── index.ts            ← Barrel: Softbar, SoftbarModal, FAIcon, PRODUCTS, tipos
+│   │   ├── index.ts            ← Barrel: Softbar, SoftbarModal, PRODUCTS, tipos
 │   │   ├── types.ts            ← Interfaces: ProductConfig, ModalProduct
 │   │   ├── softbar.config.tsx  ← Catálogo estático dos 5 produtos do ecossistema Nexus
 │   │   ├── Softbar.tsx         ← Componente principal: barra 56px, tooltips, badges, modal
 │   │   ├── Softbar.css         ← Estilos da barra lateral
 │   │   ├── SoftbarModal.tsx    ← Modal de produto não contratado / "em breve"
 │   │   ├── SoftbarModal.css    ← Estilos do modal
-│   │   ├── FAIcon.tsx          ← Wrapper FA Pro: isola SVGs do React via dangerouslySetInnerHTML
+│   │   ├── nexus-palette.css   ← Todas as cores da Softbar (--nexus-*), candidatas a tema do 1DS
 │   │   └── logo softplan.svg   ← Logo usado no botão superior da Softbar
 │   │
 │   └── demo/                   ← SHELL DE DEMONSTRAÇÃO — não vai para produção
@@ -89,10 +90,10 @@ A demo importa do módulo assim: `import Softbar from "../softbar"` — nunca di
 
 - ✅ **Componente Softbar** (`src/softbar/Softbar.tsx`) — barra 56px, `<nav>` com `aria-label`, lista de produtos com `aria-current="page"` no item ativo, tooltips hover com nome + descrição + status de contratação, badge de notificação numérico, lock-dot para produtos não contratados
 - ✅ **SoftbarModal** (`src/softbar/SoftbarModal.tsx`) — modal de produto não contratado com chips, features, tagline, longDesc; modal alternativo para itens "em breve"; Escape key + click-outside para fechar; `aria-modal` + `aria-labelledby`
-- ✅ **FAIcon wrapper** (`src/softbar/FAIcon.tsx`) — encapsula `<i class="...">` via `dangerouslySetInnerHTML`; previne que React destrua SVGs injetados pelo motor FA JS
+- ✅ **FAIcon wrapper** (`src/demo/FAIcon.tsx`, só na demo) — encapsula `<i class="...">` via `dangerouslySetInnerHTML`; previne que React destrua SVGs injetados pelo motor FA JS
 - ✅ **Catálogo de produtos** (`src/softbar/softbar.config.tsx`) — 5 produtos: Procuradorias, Obras Públicas, Licenciamento Ambiental, Gestão de Projetos, Processos Digitais; cada produto carrega seu `Icon: React.ComponentType` tipado
 - ✅ **Ferramentas "Em breve"** — Map, Analytics, Mensageria; hardcoded em `SOON_TOOLS` dentro de `Softbar.tsx`
-- ✅ **API pública limpa** — `index.ts` (raiz) + `src/softbar/index.ts` exportam consistentemente: `Softbar` (default), `SoftbarModal`, `FAIcon`, `PRODUCTS`, `ProductConfig`, `ModalProduct`
+- ✅ **API pública limpa** — `index.ts` (raiz) + `src/softbar/index.ts` exportam consistentemente: `Softbar` (default), `SoftbarModal`, `PRODUCTS`, `ProductConfig`, `ModalProduct`
 - ✅ **Props de integração** — `activeProductId`, `clientProducts`, `notifications`, `onProductChange`, `onLogoClick`; todas opcionais com defaults sensatos; Softbar notifica, não navega
 - ✅ **TypeScript strict** — interfaces em `types.ts`; `SoftbarProps`, `ModalProduct`, `ProductConfig` sem `any`; `tsc --noEmit` passa; build em ~2.5s
 - ✅ **Bundle split** — `vendor-react` (~192 KB), `vendor-fa` (~14 MB, cache separado), app code (~42 KB)
@@ -134,7 +135,7 @@ Não há nenhuma chamada `fetch`/`axios` no projeto hoje. A Softbar recebe tudo 
 - **Softbar notifica, não navega** — `onProductChange` e `onLogoClick` são callbacks opcionais. O roteamento é responsabilidade do app host. A Softbar não tem dependência de router.
 - **`host: true` no `vite.config.ts`** — expõe o servidor de dev em `0.0.0.0` (todas as interfaces). Útil para testar em dispositivos na mesma rede. Risco em redes corporativas ou públicas — ver seção de segurança.
 - **TypeScript 6 com `strict: true`** e `noUnusedLocals/Parameters: false` — strict ativado para segurança de tipos; flags de unused desativadas para não bloquear desenvolvimento iterativo.
-- **Sem `@1doc/1ds-react`** — o projeto usa CSS próprio (arquivos `.css` por componente) com cores hardcoded. O design system 1DS não está instalado apesar de constar no CLAUDE.md. Decisão de escopo deste protótipo.
+- **Softbar no 1DS, cores do Nexus** — desde 2026-10-30 o módulo `src/softbar/` usa componentes, espaços e tipografia do `@1doc/1ds-react`; as cores continuam as da paleta Nexus, que deve virar tema do DS. As telas de `src/demo/` seguem com CSS próprio e FA Pro.
 
 ---
 
@@ -151,7 +152,7 @@ Não há nenhuma chamada `fetch`/`axios` no projeto hoje. A Softbar recebe tudo 
 | Severidade | Item | Localização | Ação |
 |-----------|------|-------------|------|
 | ALTO | `host: true` expõe dev server em `0.0.0.0` | `vite.config.ts:7` | Mudar para `host: 'localhost'` se não precisar de acesso em rede local |
-| MÉDIO | `dangerouslySetInnerHTML` sem sanitização em `FAIcon` | `src/softbar/FAIcon.tsx:12` | Adicionar `icon.replace(/[^a-z0-9 -]/gi, '')` como defesa em profundidade (risco teórico hoje) |
+| MÉDIO | `dangerouslySetInnerHTML` sem sanitização em `FAIcon` | `src/demo/FAIcon.tsx:12` | Adicionar `icon.replace(/[^a-z0-9 -]/gi, '')` como defesa em profundidade (risco teórico hoje) |
 | MÉDIO | Nomes reais de pessoas nos mocks | `src/demo/Header.tsx:148`, `CentralDeAcoes.tsx:98` e outros | Substituir por dados fictícios antes de qualquer URL pública externa |
 | MÉDIO | Sem `ErrorBoundary` nos produtos demo | `NexusHome`, `CentralDeAcoes`, `ObrasGov` | Implementar antes de produção |
 | BAIXO | HSTS ausente no `vercel.json` | `vercel.json` | Adicionar `Strict-Transport-Security` antes de domínio próprio |
@@ -176,7 +177,7 @@ Não há nenhuma chamada `fetch`/`axios` no projeto hoje. A Softbar recebe tudo 
 - ⚠️ **Bundle FA Pro ~14 MB** — `all.min.js` carrega os 7.000+ ícones FA Pro. Inevitável com a arquitetura atual. Tree-shaking via `@fortawesome/fontawesome-svg-core` reduziria para ~50 KB, mas requer refatorar o `FAIcon` wrapper e importar ícones individualmente.
 - ⚠️ **Sem i18n** — todos os textos são PT-BR hardcoded. O CLAUDE.md define PT/EN como padrão, mas não foi implementado neste protótipo.
 - ⚠️ **Sem alto contraste nem modo escuro** — `data-contrast` e `data-dark` documentados no CLAUDE.md estão ausentes. Nenhum handler implementado.
-- ⚠️ **Sem `@1doc/1ds-react`** — CSS próprio por componente; migração para tokens 1DS é trabalho não estimado.
+- ⚠️ **Demo fora do 1DS** — as telas de `src/demo/` seguem com CSS próprio; só a Softbar migrou.
 - ⚠️ **`softbar.config.tsx` estático** — novos produtos do ecossistema exigem alteração no código e redeploy.
 - ⚠️ **`SoftbarProps.clientProducts` sem granularidade de roles** — a prop determina "contratado vs. não contratado" mas não distingue roles dentro de um produto. Se a Softbar precisar esconder itens por role, isso não está modelado.
 
