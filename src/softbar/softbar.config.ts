@@ -1,4 +1,10 @@
-import FAIcon from "./FAIcon";
+import {
+  faScaleBalanced,
+  faHelmetSafety,
+  faTree,
+  faDiagramProject,
+  faFolderTree,
+} from "@fortawesome/free-solid-svg-icons";
 import type { ProductConfig } from "./types";
 
 export const PRODUCTS: ProductConfig[] = [
@@ -18,7 +24,7 @@ export const PRODUCTS: ProductConfig[] = [
       "Relatórios gerenciais para tomada de decisão",
     ],
     chips: ["Dívida ativa", "Devedor", "Histórico", "Impedimentos de cobrança", "Execução fiscal"],
-    Icon: IconProcuradorias,
+    icon: faScaleBalanced,
   },
   {
     id: "obras",
@@ -36,7 +42,7 @@ export const PRODUCTS: ProductConfig[] = [
       "Integração com financeiro e planejamento",
     ],
     chips: ["Contratos", "Medições", "Cronogramas", "Indicadores", "Convênios"],
-    Icon: IconObras,
+    icon: faHelmetSafety,
   },
   {
     id: "licenciamento",
@@ -54,7 +60,7 @@ export const PRODUCTS: ProductConfig[] = [
       "Histórico completo de processos",
     ],
     chips: ["Licenças", "Condicionantes", "Alertas", "Renovações"],
-    Icon: IconLicenciamento,
+    icon: faTree,
   },
   {
     id: "gestao-projetos",
@@ -72,7 +78,7 @@ export const PRODUCTS: ProductConfig[] = [
       "Dashboards e relatórios executivos",
     ],
     chips: ["Portfólio", "Cronograma", "Equipes", "OKRs"],
-    Icon: IconGestao,
+    icon: faDiagramProject,
   },
   {
     id: "processos-digitais",
@@ -90,26 +96,6 @@ export const PRODUCTS: ProductConfig[] = [
       "Inbox centralizado por setor",
     ],
     chips: ["Memorandos", "Assinaturas", "Prazos", "Inbox", "Comunicados"],
-    Icon: IconProcessos,
+    icon: faFolderTree,
   },
 ];
-
-function IconProcuradorias() {
-  return <FAIcon icon="fa-duotone fa-scale-balanced" />;
-}
-
-function IconObras() {
-  return <FAIcon icon="fa-duotone fa-helmet-safety" />;
-}
-
-function IconLicenciamento() {
-  return <FAIcon icon="fa-duotone fa-tree" />;
-}
-
-function IconGestao() {
-  return <FAIcon icon="fa-duotone fa-diagram-project" />;
-}
-
-function IconProcessos() {
-  return <FAIcon icon="fa-duotone fa-folder-tree" />;
-}

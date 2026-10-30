@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import FAIcon from "../softbar/FAIcon";
+import FAIcon from "./FAIcon";
 import "./Subheader.css";
 
 interface Setor {

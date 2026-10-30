@@ -1,90 +1,75 @@
-import { useEffect } from "react";
+import { Modal, Tag } from "@1doc/1ds-react";
 import type { ModalProduct } from "./types";
 import "./SoftbarModal.css";
 
 interface SoftbarModalProps {
+  /** Produto mostrado. `null` fecha o modal. */
   product: ModalProduct | null;
+  /** Ação principal. Sem ela, o modal só oferece "Fechar". */
+  onConfirm?: () => void;
   onClose: () => void;
 }
 
-export default function SoftbarModal({ product, onClose }: SoftbarModalProps) {
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [onClose]);
-
-  if (!product) return null;
-
-  const isSoon = product.soon;
+// Modal do 1DS: foco preso no diálogo, Esc e clique fora fecham, e o foco volta
+// para o item da Softbar que abriu. Fica sempre montado: o 1DS só devolve o foco
+// quando `open` passa a false, não quando o modal é desmontado. Sem `portal`: no
+// 1DS 2.26.0, com ele o foco não volta ao fechar (pedido aberto para o DS).
+export default function SoftbarModal({ product, onConfirm, onClose }: SoftbarModalProps) {
+  const isSoon = product?.soon;
 
   return (
-    <div
-      className="sbmodal-overlay"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="sbmodal-title"
+    <Modal
+      open={!!product}
+      size="md"
+      layout="content"
+      className="sbmodal-dialog"
+      title={isSoon ? product?.label : product?.tagline}
+      description={
+        isSoon
+          ? `${product?.label} está sendo preparado e em breve estará disponível para contratação.`
+          : product?.longDesc
+      }
+      confirmLabel={onConfirm ? (isSoon ? "Me notifique quando lançar" : "Solicitar avaliação") : undefined}
+      cancelLabel="Fechar"
+      closeLabel="Fechar"
+      onConfirm={onConfirm}
+      onCancel={onClose}
+      onClose={onClose}
     >
-      <div className="sbmodal">
-        <button className="sbmodal__close" onClick={onClose} aria-label="Fechar">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="1" y1="1" x2="13" y2="13" />
-            <line x1="13" y1="1" x2="1" y2="13" />
-          </svg>
-        </button>
+      {product && (
+        <div className="sbmodal">
+          <Tag
+            pill
+            size="sm"
+            className={`sbmodal__badge${isSoon ? " sbmodal__badge--soon" : ""}`}
+            label={isSoon ? "Em breve" : product.badge}
+          />
 
-        <div className="sbmodal__header">
-          <span className={`sbmodal__badge ${isSoon ? "sbmodal__badge--soon" : ""}`}>
-            {isSoon ? "Em breve" : product.badge}
-          </span>
-          <h2 className="sbmodal__title" id="sbmodal-title">
-            {isSoon ? product.label : product.tagline}
-          </h2>
-          <p className="sbmodal__desc">
-            {isSoon
-              ? `${product.label} está sendo preparado e em breve estará disponível para contratação.`
-              : product.longDesc}
-          </p>
+          {!isSoon && product.chips && (
+            <ul className="sbmodal__chips" aria-label="Recursos principais">
+              {product.chips.map((chip) => (
+                <li key={chip}>
+                  <Tag size="sm" className="sbmodal__chip" label={chip} />
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {!isSoon && product.features && (
+            <ul className="sbmodal__features">
+              {product.features.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+          )}
+
+          {!isSoon && (
+            <p className="sbmodal__integrate">
+              Integra com: <strong>Processos Digitais · 1Doc</strong>
+            </p>
+          )}
         </div>
-
-        {product.chips && !isSoon && (
-          <div className="sbmodal__chips">
-            {product.chips.map((chip) => (
-              <span key={chip} className="sbmodal__chip">{chip}</span>
-            ))}
-          </div>
-        )}
-
-        {product.features && !isSoon && (
-          <ul className="sbmodal__features">
-            {product.features.map((f) => (
-              <li key={f}>{f}</li>
-            ))}
-          </ul>
-        )}
-
-        {!isSoon && (
-          <p className="sbmodal__integrate">
-            Integra com: <strong>Processos Digitais · 1Doc</strong>
-          </p>
-        )}
-
-        <div className="sbmodal__actions">
-          <button
-            className="sbmodal__btn-primary"
-            onClick={() => {
-              // TODO: integrar com formulário/API de avaliação
-              onClose();
-            }}
-          >
-            {isSoon ? "Me notifique quando lançar" : "Solicitar avaliação"}
-          </button>
-          <button className="sbmodal__btn-secondary" onClick={onClose}>
-            Fechar
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
+    </Modal>
   );
 }

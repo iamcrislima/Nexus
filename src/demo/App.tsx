@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ToastStack } from "@1doc/1ds-react";
 import Softbar from "../softbar";
 import Header from "./Header";
 import Subheader from "./Subheader";
@@ -62,6 +63,9 @@ export default function App() {
         onProductChange={setActiveProduct}
         onLogoClick={() => setActiveProduct("nexus-home")}
         onProfileClick={() => setActiveProduct("minha-conta")}
+        // DEMO: no produto host, estes dois mandam o pedido para a API
+        onRequestEvaluation={() => {}}
+        onNotifyWhenAvailable={() => {}}
       />
 
       <main style={{
@@ -89,6 +93,7 @@ export default function App() {
     </div>
 
     {mostrarTour && <OnboardingTour onFim={() => setMostrarTour(false)} />}
+    <ToastStack />
     </>
   );
 }

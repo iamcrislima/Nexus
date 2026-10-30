@@ -1,4 +1,4 @@
-import type React from "react";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 export interface ProductConfig {
   id: string;
@@ -10,7 +10,7 @@ export interface ProductConfig {
   longDesc: string;
   features: string[];
   chips: string[];
-  Icon: React.ComponentType;
+  icon: IconDefinition;
 }
 
 export interface ModalProduct extends Partial<ProductConfig> {

@@ -1,4 +1,4 @@
-import FAIcon from "../softbar/FAIcon";
+import FAIcon from "./FAIcon";
 import "./CentralDeAcoes.css";
 
 interface Counter {

@@ -1,0 +1,74 @@
+/* ============================================================
+   PALETA NEXUS — cores da Softbar, iguais à spec v1.1
+   Nexus Project · Softplan
+
+   Todas as cores da Softbar moram aqui, e só aqui. Componentes,
+   espaço, raio e tipografia vêm do 1DS; a cor continua a do Nexus
+   porque a paleta deve entrar no DS como tema próprio. Quando
+   entrar, cada --nexus-* vira o token do DS e o resto do CSS não muda.
+   Os nomes seguem a seção "Tokens de design" da spec.
+   ============================================================ */
+
+:root {
+  /* Barra */
+  --nexus-softbar-bg: #1a1a2e;
+  --nexus-softbar-border: #ffffff0f;
+  --nexus-softbar-divider: #ffffff1a;
+  --nexus-softbar-surface-dark: #12122a;
+
+  /* Itens: ícone atenuado por estado, como define a spec v1.1 */
+  --nexus-icon-default: #ffffff61;
+  --nexus-icon-hover: #ffffffd9;
+  --nexus-icon-active: #ffffff;
+  --nexus-icon-disabled: #ffffff33;
+  --nexus-icon-disabled-hover: #ffffff73;
+  --nexus-icon-soon: #ffffff26;
+  --nexus-logo: #ffffff;
+  --nexus-item-hover-bg: #ffffff17;
+  --nexus-item-active-bg: #6366f159;
+  --nexus-item-active-hover-bg: #6366f173;
+  --nexus-item-disabled-hover-bg: #ffffff0d;
+  --nexus-focus-ring: #5b4eff99;
+  --nexus-lock-dot-bg: #ffffff2e;
+  --nexus-badge-bg: #ef4444;
+  --nexus-badge-text: #ffffff;
+
+  /* Tooltip */
+  --nexus-tooltip-bg: #1e1e3f;
+  --nexus-tooltip-border: #ffffff1a;
+  --nexus-tooltip-shadow: #00000066;
+  --nexus-tooltip-name: #ffffff;
+  --nexus-tooltip-desc: #ffffff73;
+  --nexus-tag-active-bg: #6366f14d;
+  --nexus-tag-active-text: #a5b4fc;
+  --nexus-tag-disabled-bg: #ffffff12;
+  --nexus-tag-disabled-text: #ffffff4d;
+  --nexus-tag-soon-bg: #f59e0b33;
+  --nexus-tag-soon-text: #fbbf24;
+
+  /* Modal de descoberta */
+  --nexus-modal-overlay: #0a0a1e99;
+  --nexus-modal-bg: #ffffff;
+  --nexus-modal-title: #111111;
+  --nexus-modal-text: #666666;
+  --nexus-modal-close-bg: #f5f5f5;
+  --nexus-modal-close-border: #e5e5e5;
+  --nexus-modal-close-hover-bg: #eaeaea;
+  --nexus-modal-badge-bg: #f0f4ff;
+  --nexus-modal-badge-text: #2563eb;
+  --nexus-modal-badge-soon-bg: #fef3c7;
+  --nexus-modal-badge-soon-text: #d97706;
+  --nexus-modal-chips-bg: #f8f9ff;
+  --nexus-modal-chips-border: #e8eaff;
+  --nexus-modal-chip-bg: #ffffff;
+  --nexus-modal-chip-border: #e0e4ff;
+  --nexus-modal-chip-text: #444444;
+  --nexus-modal-feature-text: #444444;
+  --nexus-modal-feature-bullet: #2563eb;
+  --nexus-modal-note: #999999;
+  --nexus-modal-note-strong: #555555;
+  --nexus-modal-primary: #2563eb;
+  --nexus-modal-primary-hover: #1d4ed8;
+  --nexus-modal-primary-text: #ffffff;
+  --nexus-modal-secondary-text: #666666;
+}

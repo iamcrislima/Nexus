@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FAIcon from "../softbar/FAIcon";
+import FAIcon from "./FAIcon";
 import "./NexusHome.css";
 
 type Period = "7d" | "30d" | "90d";
